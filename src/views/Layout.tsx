@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
-import { Nav } from "../components";
+import { Nav, Selectors } from "../components";
 
 export function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
@@ -8,7 +8,10 @@ export function Layout({ children }: React.PropsWithChildren<{}>) {
       <GridItem bg="white">
         <Nav />
       </GridItem>
-      <GridItem>{children}</GridItem>
+      <GridItem>
+        <Selectors />
+        {children}
+      </GridItem>
     </Grid>
   );
 }
