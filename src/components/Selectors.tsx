@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
-// import { AccountsMenu } from "features/accounts";
+import { UserMenu } from "features/users";
 // import { NetworkMenu } from "features/network";
 
 export function Selectors() {
   return (
     <Flex justify="space-between" alignItems="center" p={2} overflow="hidden">
-      <pre>[ACCOUNTS]</pre>
+      <UserMenu />
       <pre>[NETWORKS]</pre>
     </Flex>
   );

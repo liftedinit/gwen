@@ -15,6 +15,7 @@ import {
   Icon,
   IconButton,
   Menu,
+  Modal,
   MenuButton,
   MenuList,
   MenuItem,
@@ -28,7 +29,13 @@ import {
 } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
 import { FiChevronDown, FiEdit } from "react-icons/fi";
+import { CgUsb } from "react-icons/cg";
 import { Account, AccountId } from "../types";
+
+export type AccountItemWithIdDisplayStrings = [
+  AccountId,
+  Account & { idDisplayStrings: { full?: string; short?: string } }
+];
 
 export function UserMenu() {
   const {
@@ -80,12 +87,7 @@ export function UserMenu() {
           variant="outline"
           colorScheme="brand.black"
         >
-          <Text
-            casing="uppercase"
-            fontWeight="semibold"
-            isTruncated
-            lineHeight="normal"
-          >
+          <Text casing="uppercase" fontWeight="semibold" lineHeight="normal">
             {activeAccount?.name}
           </Text>
         </MenuButton>
@@ -122,33 +124,103 @@ export function UserMenu() {
             alignItems="center"
             _hover={{ backgroundColor: "transparent" }}
           >
-            <Button
-              data-testid="add wallet btn"
-              isFullWidth
-              onClick={onAddModalOpen}
-            >
+            <Button data-testid="add wallet btn" onClick={onAddModalOpen}>
               Add Account
             </Button>
           </MenuItem>
         </MenuList>
       </Menu>
       {!isAnonymous && !!activeAccount && (
-        <AddressText
-          addressText={activeAccount.address!}
-          display={{ base: "none", md: "inline-flex" }}
-          ms={2}
-          textProps={{
-            "aria-label": "active wallet address",
-          }}
-        />
+        <pre>{activeAccount.address!}</pre>
+        // <AddressText
+        //   addressText={activeAccount.address!}
+        //   display={{ base: "none", md: "inline-flex" }}
+        //   ms={2}
+        //   textProps={{
+        //     "aria-label": "active wallet address",
+        //   }}
+        // />
       )}
 
-      <AddAccountModal isOpen={isAddModalOpen} onClose={onAddModalClose} />
-      <EditAccountModal
-        account={editAccount!}
+      <Modal isOpen={isAddModalOpen} onClose={onAddModalClose}>
+        <pre>[ADD ACCOUNT]</pre>
+      </Modal>
+      <Modal
+        // account={editAccount!}
         isOpen={isEditModalOpen}
         onClose={onEditModalClose}
-      />
+      >
+        <pre>[EDIT ACCOUNT]</pre>
+      </Modal>
     </Flex>
+  );
+}
+
+function AccountMenuItem({
+  activeId,
+  account,
+  setActiveId,
+  onEditClick,
+}: {
+  activeId: AccountId;
+  account: [number, Account];
+  setActiveId: (id: number) => void;
+  onEditClick: (a: [number, Account]) => void;
+}) {
+  const id = account[0];
+  const isActive = activeId === id;
+  const accountData = account[1];
+  const isWebAuthnIdentity = accountData?.identity instanceof WebAuthnIdentity;
+  const isAnonymous = accountData?.identity instanceof AnonymousIdentity;
+  return (
+    <MenuItem as={SimpleGrid} columns={3} borderTopWidth={1} spacing={4} py={4}>
+      {isActive && <Circle bg="green.400" size="10px" />}
+      <VStack align="flex-start" spacing={1} flexGrow={1}>
+        <HStack>
+          {isActive ? (
+            <HStack>
+              <Text fontSize={{ base: "xl", md: "md" }} casing="uppercase">
+                {accountData.name}
+              </Text>
+              {isWebAuthnIdentity && <Icon as={CgUsb} boxSize={5} />}
+            </HStack>
+          ) : (
+            <Button
+              variant="link"
+              onClick={() => setActiveId?.(id)}
+              rightIcon={
+                isWebAuthnIdentity ? <Icon as={CgUsb} boxSize={5} /> : undefined
+              }
+            >
+              <Text
+                wordBreak="break-word"
+                whiteSpace="pre-wrap"
+                fontSize={{ base: "xl", md: "md" }}
+                textAlign="left"
+                casing="uppercase"
+              >
+                {accountData.name}
+              </Text>
+            </Button>
+          )}
+        </HStack>
+        {!isAnonymous && (
+          <pre>accountData.address</pre>
+          // <AddressText
+          //   addressText={accountData.address!}
+          //   bgColor={undefined}
+          //   p={0}
+          // />
+        )}
+      </VStack>
+      {
+        <IconButton
+          variant="ghost"
+          aria-label={`edit account ${accountData.name}`}
+          icon={<Icon as={FiEdit} boxSize={5} />}
+          onClick={() => onEditClick(account)}
+        />
+      }
+    </MenuItem>
   );
 }
