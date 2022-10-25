@@ -16,6 +16,12 @@ interface UserMethods {
   setActiveId: (id: UserId) => void;
 }
 
+const anonUser = new AnonymousIdentity();
+const demoUser = Ed25519KeyPairIdentity.fromPem(`
+-----BEGIN PRIVATE KEY-----
+MC4CAQAwBQYDK2VwBCIEIHcoTY2RYa48O8ONAgfxEw+15MIyqSat0/QpwA1YxiPD
+-----END PRIVATE KEY-----`);
+
 const initialState: UsersState = {
   activeId: 0,
   byId: new Map([
@@ -23,65 +29,73 @@ const initialState: UsersState = {
       0,
       {
         name: "Anonymous",
-        identity: new AnonymousIdentity(),
+        identity: anonUser,
         address: ANON_IDENTITY,
       },
     ],
+    [
+      1,
+      {
+        name: "Demo User",
+        identity: demoUser,
+        address: "",
+      },
+    ],
   ]),
-  nextId: 1,
+  nextId: 2,
 };
 
 export const useUsersStore = create<UsersState & UserMethods>(
-  // persist(
-  (set) => ({
-    ...initialState,
-    createUser: async (account: Partial<User>) => {
-      try {
-        if (account?.identity) {
-          const address = (await account.identity.getAddress()).toString();
-          account.address = address;
+  persist(
+    (set) => ({
+      ...initialState,
+      createUser: async (account: Partial<User>) => {
+        try {
+          if (account?.identity) {
+            const address = (await account.identity.getAddress()).toString();
+            account.address = address;
+          }
+        } catch (error) {
+          console.error("createUser error getting address", error);
         }
-      } catch (error) {
-        console.error("createUser error getting address", error);
-      }
-      set((state) => {
-        const id = state.nextId;
-        return {
-          nextId: id + 1,
+        set((state) => {
+          const id = state.nextId;
+          return {
+            nextId: id + 1,
+            activeId: id,
+            byId: new Map(state.byId).set(id, account as User),
+          };
+        });
+      },
+      updateUser: (id: UserId, account: Partial<User>) =>
+        set((s) => ({
+          byId: new Map(s.byId).set(id, {
+            ...s.byId.get(id),
+            ...account,
+          } as User),
+        })),
+      deleteUser: (id: UserId) =>
+        set((s) => {
+          s.byId.delete(id);
+          return {
+            activeId: s.activeId === id ? 0 : s.activeId,
+            byId: s.byId,
+          };
+        }),
+      setActiveId: (id: UserId) =>
+        set({
           activeId: id,
-          byId: new Map(state.byId).set(id, account as User),
-        };
-      });
-    },
-    updateUser: (id: UserId, account: Partial<User>) =>
-      set((s) => ({
-        byId: new Map(s.byId).set(id, {
-          ...s.byId.get(id),
-          ...account,
-        } as User),
-      })),
-    deleteUser: (id: UserId) =>
-      set((s) => {
-        s.byId.delete(id);
-        return {
-          activeId: s.activeId === id ? 0 : s.activeId,
-          byId: s.byId,
-        };
-      }),
-    setActiveId: (id: UserId) =>
-      set({
-        activeId: id,
-      }),
-  })
-  //   {
-  //     name: "ALBERTO.IDENTITIES",
-  //     // @ts-ignore
-  //     getStorage: () => localforage,
-  //     serialize: (state) =>
-  //       JSON.stringify(removeEd25519KeyPairIdentities(state), replacer),
-  //     deserialize: (str) => JSON.parse(str, reviver),
-  //   }
-  // )
+        }),
+    }),
+    {
+      name: "ALBERTO.IDENTITIES",
+      // @ts-ignore
+      getStorage: () => localforage,
+      serialize: (state) =>
+        JSON.stringify(removeEd25519KeyPairIdentities(state), replacer),
+      deserialize: (str) => JSON.parse(str, reviver),
+    }
+  )
 );
 
 // @ts-ignore
