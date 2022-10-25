@@ -1,7 +1,7 @@
 import { AnonymousIdentity, WebAuthnIdentity } from "@liftedinit/many-js";
 import { base64ToArrayBuffer } from "./convert";
 
-export function replacer(key: string, value: any) {
+export function replacer(_: string, value: any) {
   if (value instanceof Map) {
     return {
       dataType: "Map",
@@ -11,7 +11,7 @@ export function replacer(key: string, value: any) {
   return value;
 }
 
-export function reviver(key: string, value: any) {
+export function reviver(_: string, value: any) {
   if (typeof value === "object" && value !== null) {
     if (value.dataType === Map.name) {
       return new Map(value.value);

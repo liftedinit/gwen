@@ -1,23 +1,21 @@
 import {
-  WebAuthnIdentity,
-  Ed25519KeyPairIdentity,
   AnonymousIdentity,
-  AccountRole,
-  EventType,
-  AccountFeatureTypes,
+  Ed25519KeyPairIdentity,
+  WebAuthnIdentity,
 } from "@liftedinit/many-js";
 
-export type AccountId = number;
-export interface Account {
+export type UserId = number;
+
+export interface User {
   name: string;
   address: string;
   identity: WebAuthnIdentity | Ed25519KeyPairIdentity | AnonymousIdentity;
 }
 
-export interface AccountsState {
-  activeId: AccountId;
-  byId: Map<AccountId, Account>;
-  nextId: AccountId;
+export interface UsersState {
+  activeId: UserId;
+  byId: Map<UserId, User>;
+  nextId: UserId;
 }
 
 export type Credential = {
@@ -34,29 +32,3 @@ export type CredentialData = {
   base64CredentialId: string;
   cosePublicKey: ArrayBuffer;
 };
-
-export const submitterRoles = [
-  AccountRole[AccountRole.canLedgerTransact],
-  AccountRole[AccountRole.canMultisigSubmit],
-  AccountRole[AccountRole.owner],
-];
-
-export const accountMultisigFeature =
-  AccountFeatureTypes[AccountFeatureTypes.accountMultisig];
-export const accountLedgerFeature =
-  AccountFeatureTypes[AccountFeatureTypes.accountLedger];
-
-export const approverRoles = [
-  AccountRole[AccountRole.canMultisigApprove],
-  AccountRole[AccountRole.canMultisigSubmit],
-  AccountRole[AccountRole.owner],
-];
-
-export const multisigTxnTypes = [
-  EventType.accountMultisigApprove,
-  EventType.accountMultisigSubmit,
-  EventType.accountMultisigExecute,
-  EventType.accountMultisigRevoke,
-  EventType.accountMultisigWithdraw,
-  EventType.accountMultisigSetDefaults,
-];
