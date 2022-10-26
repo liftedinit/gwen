@@ -88,7 +88,7 @@ export const useUsersStore = create<UsersState & UserMethods>(
         }),
     }),
     {
-      name: "ALBERTO.IDENTITIES",
+      name: "GWEN.USERS",
       // @ts-ignore
       getStorage: () => localforage,
       serialize: (state) =>
