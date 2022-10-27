@@ -7,16 +7,10 @@ import {
   Layout,
   ModuleSettings,
   Settings,
-  SignIn,
   Users,
 } from "./views";
-import { useProfileContext } from "./providers/ProfileProvider";
 
 function App() {
-  const { profile } = useProfileContext();
-  if (!profile) {
-    return <SignIn />;
-  }
   return (
     <Routes>
       <Route

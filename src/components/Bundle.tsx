@@ -28,7 +28,12 @@ export function Bundle({ name, description, icon, modules }: IBundle) {
       </Flex>
       <Wrap>
         {modules.map(({ name, description, color }) => (
-          <Module name={name} description={description} color={color} />
+          <Module
+            key={name}
+            name={name}
+            description={description}
+            color={color}
+          />
         ))}
       </Wrap>
     </Box>
