@@ -7,3 +7,4 @@ export { ModuleSettings } from "./ModuleSettings";
 export { Settings } from "./Settings";
 export { SignIn } from "./SignIn";
 export { Users } from "./Users";
+export { Splash } from "./Splash";

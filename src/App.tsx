@@ -1,3 +1,4 @@
+import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import {
   Account,
@@ -9,11 +10,23 @@ import {
   Settings,
   SignIn,
   Users,
+  Splash,
 } from "./views";
 import { useProfileContext } from "./providers/ProfileProvider";
 
+const ONE_SECOND = 1 * 1000;
+
 function App() {
   const { profile } = useProfileContext();
+  const [showSplash, setShowSplash] = React.useState(true);
+  React.useEffect(() => {
+    let id = setTimeout(() => setShowSplash(false), ONE_SECOND);
+    return () => clearTimeout(id);
+  }, []);
+
+  if (showSplash) {
+    return <Splash />;
+  }
   if (!profile) {
     return <SignIn />;
   }
