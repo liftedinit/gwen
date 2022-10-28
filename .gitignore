@@ -7,6 +7,7 @@
 
 # testing
 /coverage
+/e2e/.env
 
 # production
 /build
@@ -17,7 +18,11 @@
 .env.development.local
 .env.test.local
 .env.production.local
+public/__ENV.js
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# IDEs
+/.idea/
