@@ -52,6 +52,7 @@ export function Settings() {
       </Flex>
       {bundles.map(({ id, name, description, icon }) => (
         <Bundle
+          key={id}
           id={id}
           name={name}
           description={description}

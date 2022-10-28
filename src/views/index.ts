@@ -5,6 +5,5 @@ export { Home } from "./Home";
 export { Layout } from "./Layout";
 export { ModuleSettings } from "./ModuleSettings";
 export { Settings } from "./Settings";
-export { SignIn } from "./SignIn";
 export { Users } from "./Users";
 export { Splash } from "./Splash";

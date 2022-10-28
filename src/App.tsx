@@ -8,16 +8,13 @@ import {
   Layout,
   ModuleSettings,
   Settings,
-  SignIn,
   Users,
   Splash,
 } from "./views";
-import { useProfileContext } from "./providers/ProfileProvider";
 
 const ONE_SECOND = 1 * 1000;
 
 function App() {
-  const { profile } = useProfileContext();
   const [showSplash, setShowSplash] = React.useState(true);
   React.useEffect(() => {
     let id = setTimeout(() => setShowSplash(false), ONE_SECOND);
@@ -27,9 +24,7 @@ function App() {
   if (showSplash) {
     return <Splash />;
   }
-  if (!profile) {
-    return <SignIn />;
-  }
+
   return (
     <Routes>
       <Route
