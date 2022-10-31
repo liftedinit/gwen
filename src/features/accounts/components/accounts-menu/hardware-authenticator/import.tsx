@@ -94,7 +94,7 @@ export function ImportFlow({ setAddMethod, onSuccess }: AddAccountMethodProps) {
         });
       }
       await WebAuthnIdentity.getCredential(credentialId);
-      createAccount({
+      await createAccount({
         name,
         identity: webAuthnIdentity,
       });

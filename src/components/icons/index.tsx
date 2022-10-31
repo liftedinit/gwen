@@ -25,6 +25,8 @@ import {
   FaRegPlayCircle,
   FaAddressCard,
   FaRegAddressCard,
+  FaGithub,
+  FaTwitter,
 } from "react-icons/fa";
 import { CgUsb } from "react-icons/cg";
 import {
@@ -35,6 +37,7 @@ import {
   FiChevronUp,
   FiPlus,
 } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
 
 const Icon: typeof BaseIcon = (props: IconProps) => {
   return <BaseIcon boxSize={6} {...props} />;
@@ -181,4 +184,16 @@ export function LinkIcon(props: IconProps) {
 
 export function LightningIcon(props: IconProps) {
   return <Icon as={BsLightningFill} {...props} />;
+}
+
+export function GoogleIcon(props: IconProps) {
+  return <Icon as={FcGoogle} {...props} />;
+}
+
+export function GithubIcon(props: IconProps) {
+  return <Icon as={FaGithub} {...props} />;
+}
+
+export function TwitterIcon(props: IconProps) {
+  return <Icon as={FaTwitter} color="#1d9bf0" {...props} />;
 }
