@@ -52,7 +52,7 @@ export const useCredentialsStore = create<
         }),
     }),
     {
-      name: "ALBERTO.CREDENTIALS",
+      name: "GWEN.CREDENTIALS",
       // @ts-ignore
       getStorage: () => localforage,
       serialize: (state) => JSON.stringify(state, replacer),

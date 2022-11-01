@@ -59,7 +59,7 @@ export const useNetworkStore = create<NetworksState & NetworkActions>(
         }),
     }),
     {
-      name: "ALBERTO.NETWORKS",
+      name: "GWEN.NETWORKS",
       // @ts-ignore
       getStorage: () => localforage,
       serialize: (state) => JSON.stringify(state, replacer),
