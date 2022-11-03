@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { Box, Text, Heading } from "@chakra-ui/react";
 import { NodeEditor, FlumeConfig, Colors, Controls } from "flume";
-import "../theme/flume.css";
+import "features/flows/flume.css";
 
 interface INodePresets {
   flow: string;

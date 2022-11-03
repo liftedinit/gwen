@@ -22,8 +22,7 @@ import {
   useToast,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal } from "components/modal";
-import { ChevronDownIcon, EditIcon } from "components/icons";
+import { Modal, ChevronDownIcon, EditIcon } from "shared/components";
 import { NetworkId, NetworkParams } from "../../types";
 
 type EditNetwork = [NetworkId, NetworkParams];

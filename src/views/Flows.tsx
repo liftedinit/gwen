@@ -9,7 +9,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
-import webServerScreenshot from "../assets/web-server.png";
+import webServerScreenshot from "features/flows/assets/web-server.png";
 
 export function Flows() {
   return (

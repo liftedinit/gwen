@@ -8,8 +8,7 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import { Modal } from "components/modal";
-import { AddressText } from "components/address-text";
+import { AddressText, Modal } from "shared/components";
 import { useAccountsStore, AccountId, Account } from "../../index";
 import { AnonymousIdentity } from "@liftedinit/many-js";
 

@@ -1,6 +1,5 @@
 import { Box, Flex, Icon, Heading, Text, Wrap } from "@chakra-ui/react";
-import { Module } from "../components";
-import { IModule } from "../components/Module";
+import { IModule, Module } from "../components";
 import { IconType } from "react-icons";
 
 interface IBundle {

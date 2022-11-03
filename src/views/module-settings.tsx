@@ -19,7 +19,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FiPlus, FiUpload } from "react-icons/fi";
-import { modules } from "../settings";
+import { modules } from "features/services";
 
 interface IField {
   key: string;

@@ -1,5 +1,5 @@
 import { Flex, Icon, useClipboard, Tooltip } from "@chakra-ui/react";
-import { CopyIcon } from "components/icons";
+import { CopyIcon } from "shared/components";
 export function CopyToClipboard({
   toCopy,
   msg,

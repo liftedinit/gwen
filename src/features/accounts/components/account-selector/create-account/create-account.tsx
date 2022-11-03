@@ -22,18 +22,18 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { TxnExpireText } from "components/txn-expire-text";
-import { OptionCard } from "components/option-card";
-import { DataField } from "components/data-field";
 import {
+  OptionCard,
+  DataField,
+  TxnExpireText,
   Step,
   Steps,
   StepsProvider,
   useSteps,
   useStepsContext,
-} from "components/steps";
-import { PlusIcon } from "components/icons";
-import { FieldWrapper } from "components/form";
+  PlusIcon,
+  FieldWrapper,
+} from "shared/components";
 import { AccountFeatureTypes, NetworkAttributes } from "@liftedinit/many-js";
 import { MultisigSettingsFields } from "../../multisig-settings-fields";
 import { AccountInfo } from "../../account-info";

@@ -1,7 +1,7 @@
 import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 import { RiArrowLeftRightLine, RiCoinLine, RiUserLine } from "react-icons/ri";
-import { Stat } from "../components";
+import { Stat } from "features/dashboard";
 
 const stats = [
   { label: "Number of Accounts", value: "520", icon: RiUserLine },

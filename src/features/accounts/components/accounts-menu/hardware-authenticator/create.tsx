@@ -15,9 +15,12 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { Modal } from "components/modal";
-import { CopyToClipboard } from "components/copy-to-clipboard";
-import { ChevronLeftIcon, UsbIcon } from "components/icons";
+import {
+  CopyToClipboard,
+  ChevronLeftIcon,
+  UsbIcon,
+  Modal,
+} from "shared/components";
 import { AddAccountMethodProps } from "../add-account-modal";
 import { LedgerSafariWarning } from "./ledger-safari-warning";
 import {
@@ -25,7 +28,7 @@ import {
   useCredentialsStore,
   useSaveWebauthnCredential,
 } from "features/accounts";
-import { arrayBufferToBase64 } from "helpers/convert";
+import { arrayBufferToBase64 } from "shared/helpers";
 
 const enum CreateSteps {
   first,

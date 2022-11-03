@@ -9,8 +9,7 @@ import {
   TabList,
   VStack,
 } from "@chakra-ui/react";
-import { Modal } from "components/modal";
-import { ChevronRightIcon } from "components/icons";
+import { ChevronRightIcon, Modal } from "shared/components";
 import { SeedWords } from "./seed-words";
 import { CreateAccount } from "./create-account";
 import { PemFile } from "./pem-file";

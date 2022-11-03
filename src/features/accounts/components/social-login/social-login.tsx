@@ -12,8 +12,12 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { GithubIcon, GoogleIcon, TwitterIcon } from "components/icons";
-import { FieldWrapper } from "components/form";
+import {
+  GithubIcon,
+  GoogleIcon,
+  TwitterIcon,
+  FieldWrapper,
+} from "shared/components";
 import { doesAccountExist, useAccountsStore } from "features/accounts";
 import React from "react";
 import { get, useForm } from "react-hook-form";

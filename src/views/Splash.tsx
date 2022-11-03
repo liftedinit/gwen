@@ -1,5 +1,5 @@
-import cube from "../assets/cube.png";
-import "./Splash.css";
+import cube from "shared/assets/cube.png";
+import "./splash.css";
 
 export function Splash() {
   return (

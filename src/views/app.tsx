@@ -10,11 +10,11 @@ import {
   Settings,
   Users,
   Splash,
-} from "./views";
+} from "views";
 
 const ONE_SECOND = 1 * 1000;
 
-function App() {
+export function App() {
   const [showSplash, setShowSplash] = React.useState(true);
   React.useEffect(() => {
     let id = setTimeout(() => setShowSplash(false), ONE_SECOND);
@@ -50,5 +50,3 @@ function App() {
     </Routes>
   );
 }
-
-export default App;

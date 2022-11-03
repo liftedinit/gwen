@@ -14,12 +14,12 @@ import {
   HStack,
   Select,
 } from "@chakra-ui/react";
-import { FieldWrapper } from "components/form";
+import { FieldWrapper } from "shared/components";
 import { approverRoles, useGetAccountInfo } from "features/accounts";
 import {
   getHoursMinutesSecondsFromSeconds,
   getSecondsFromHoursMinutesSeconds,
-} from "helpers/convert";
+} from "shared/helpers";
 
 export function MultisigSettingsFields({
   accountAddress,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
-import { Nav, Selectors } from "../components";
+import { Nav, Selectors } from "shared/components";
 
 export function Layout({ children }: React.PropsWithChildren<{}>) {
   return (

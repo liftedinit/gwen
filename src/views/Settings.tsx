@@ -12,8 +12,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { FiPlus, FiSearch } from "react-icons/fi";
-import { Bundle } from "../components";
-import { bundles, modules } from "../settings";
+import { Bundle, bundles, modules } from "features/services";
 
 export function Settings() {
   const [search, setSearch] = useState("");

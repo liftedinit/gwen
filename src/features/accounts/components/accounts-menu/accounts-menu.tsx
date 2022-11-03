@@ -24,8 +24,13 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, EditIcon, UserIcon, UsbIcon } from "components/icons";
-import { AddressText } from "components/address-text";
+import {
+  AddressText,
+  ChevronDownIcon,
+  EditIcon,
+  UserIcon,
+  UsbIcon,
+} from "shared/components";
 import { AddAccountModal } from "./add-account-modal";
 import { EditAccountModal } from "./edit-account-modal";
 import { Account, AccountId } from "../../types";
