@@ -1,0 +1,154 @@
+# gwen CI
+# The Lifted Initiative
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.2
+
+jobs:
+  test-build:
+    parameters:
+      node_version:
+        type: string
+    executor:
+      name: node/default
+      tag: << parameters.node_version >>
+    resource_class: medium+
+    steps:
+      - install-packages
+      - run:
+          name: Run tests
+          command: npm run test
+      - when:
+          condition:
+            and:
+              - not:
+                  equal: ["16.16.0", << parameters.node_version >>]
+          steps:
+            # node 17+ workaround https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
+            - run: echo 'export NODE_OPTIONS=--openssl-legacy-provider' >> $BASH_ENV
+      - run:
+          name: Build staging app
+          command: npm run build:staging
+
+  create:
+    parameters:
+      app_env:
+        type: string
+    executor:
+      name: node/default
+      tag: "16.16.0"
+    resource_class: large
+    steps:
+      - install-packages
+      - run: mkdir /tmp/artifacts
+      - run:
+          name: Build << parameters.app_env >> app
+          command: npm run build:<< parameters.app_env >>
+      - run:
+          name: Compress artifacts
+          command: tar -cvzf /tmp/artifacts/alberto_<< parameters.app_env >>_${CIRCLE_TAG}_${CIRCLE_SHA1}.tar.gz ./build
+      - run:
+          name: create release shasum
+          command: shasum /tmp/artifacts/alberto_<< parameters.app_env >>_${CIRCLE_TAG}_${CIRCLE_SHA1}.tar.gz > /tmp/artifacts/shasum_<< parameters.app_env >>_${CIRCLE_TAG}_${CIRCLE_SHA1}.txt
+      - persist_to_workspace:
+          root: /tmp/artifacts
+          paths:
+            - "*.tar.gz"
+            - "*.txt"
+
+  publish:
+    parameters:
+      pre-release:
+        type: boolean
+        default: false
+    docker:
+      - image: cibuilds/github:0.10
+    resource_class: medium
+    steps:
+      - attach_workspace:
+          at: /tmp/artifacts
+      - when:
+          condition:
+            not: << parameters.pre-release >>
+          steps:
+            - run:
+                name: publish release
+                command: ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_TAG} /tmp/artifacts
+      - when:
+          condition: << parameters.pre-release >>
+          steps:
+            - run:
+                name: publish pre-release
+                command: ghr -prerelease -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_TAG} /tmp/artifacts
+
+workflows:
+  ci:
+    jobs:
+      - test-build:
+          matrix:
+            parameters:
+              node_version:
+                - "lts"
+                - "current"
+                - "16.16.0"
+
+  release:
+    when:
+      not:
+        equal: [scheduled_pipeline, << pipeline.trigger_source >>]
+    jobs:
+      - create:
+          matrix:
+            parameters:
+              app_env:
+                - "staging"
+                - "prod"
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only:
+                - /^\d+\.\d+\.\d+$/ # e.g., 0.1.1, 1.0.0
+                - /^\d+\.\d+\.\d+-(alpha|beta)$/ # e.g., 0.1.1-alpha, 2.3.1-beta
+                - /^\d+\.\d+\.\d+-.*-rc.*$/ # e.g., 0.1.1-alpha-rc1, 1.3.4-beta-rc4
+                - /^\d+\.\d+\.\d+-pre.*$/ # e.g., 0.1.1-prealpha-3, 1.5.6-prealpha-8
+      - publish:
+          name: publish
+          pre-release: false
+          context:
+            - GITHUB_CREDS
+          requires:
+            - create
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only:
+                - /^\d+\.\d+\.\d+$/ # e.g., 0.1.1, 1.0.0
+                - /^\d+\.\d+\.\d+-(alpha|beta)$/ # e.g., 0.1.1-alpha, 2.3.1-beta
+      - publish:
+          name: publish-pre-release
+          pre-release: true
+          context:
+            - GITHUB_CREDS
+          requires:
+            - create
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only:
+                - /^\d+\.\d+\.\d+-.*-rc.*$/ # e.g., 0.1.1-alpha-rc1, 1.3.4-beta-rc4
+                - /^\d+\.\d+\.\d+-pre.*$/ # e.g., 0.1.1-prealpha-3, 1.5.6-prealpha-8
+
+commands:
+  install-packages:
+    description: Checkout and install packages
+    steps:
+      - checkout
+      - run:
+          name: Versions
+          command: node -v && npm -v
+      - node/install-packages:
+          pkg-manager: npm
