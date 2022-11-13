@@ -20,7 +20,7 @@ import {
   ChevronLeftIcon,
   UsbIcon,
   Modal,
-} from "shared/components";
+} from "@liftedinit/ui";
 import { AddAccountMethodProps } from "../add-account-modal";
 import { LedgerSafariWarning } from "./ledger-safari-warning";
 import {

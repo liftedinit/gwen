@@ -14,7 +14,7 @@ import {
   HStack,
   Select,
 } from "@chakra-ui/react";
-import { FieldWrapper } from "shared/components";
+import { FieldWrapper } from "@liftedinit/ui";
 import { approverRoles, useGetAccountInfo } from "features/accounts";
 import {
   getHoursMinutesSecondsFromSeconds,

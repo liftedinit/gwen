@@ -14,7 +14,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Modal, UsbIcon, ChevronLeftIcon } from "shared/components";
+import { Modal, UsbIcon, ChevronLeftIcon } from "@liftedinit/ui";
 import { AddAccountMethodProps } from "../add-account-modal";
 import {
   useAccountsStore,

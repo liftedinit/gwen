@@ -33,7 +33,7 @@ import {
   useStepsContext,
   PlusIcon,
   FieldWrapper,
-} from "shared/components";
+} from "@liftedinit/ui";
 import { AccountFeatureTypes, NetworkAttributes } from "@liftedinit/many-js";
 import { MultisigSettingsFields } from "../../multisig-settings-fields";
 import { AccountInfo } from "../../account-info";

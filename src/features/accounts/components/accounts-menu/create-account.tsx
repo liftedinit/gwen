@@ -9,7 +9,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { ChevronLeftIcon, CopyToClipboard, Modal } from "shared/components";
+import { ChevronLeftIcon, CopyToClipboard, Modal } from "@liftedinit/ui";
 import { useAccountsStore } from "features/accounts";
 import { Ed25519KeyPairIdentity } from "@liftedinit/many-js";
 import { AddAccountMethodProps } from "./add-account-modal";
