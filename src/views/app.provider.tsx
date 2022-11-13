@@ -1,7 +1,6 @@
 import React from "react";
 import { HashRouter } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
-import { theme } from "shared/theme";
+import { theme, ThemeProvider } from "@liftedinit/ui";
 import { NetworkProvider } from "features/network";
 import { Web3authProvider } from "features/accounts";
 import { QueryClientProvider } from "react-query";
@@ -13,7 +12,7 @@ interface IAppProvider {
 
 export function AppProvider({ children }: IAppProvider) {
   return (
-    <ChakraProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <Web3authProvider>
           <NetworkProvider>
@@ -21,6 +20,6 @@ export function AppProvider({ children }: IAppProvider) {
           </NetworkProvider>
         </Web3authProvider>
       </QueryClientProvider>
-    </ChakraProvider>
+    </ThemeProvider>
   );
 }

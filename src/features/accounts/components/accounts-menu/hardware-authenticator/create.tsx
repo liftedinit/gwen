@@ -28,7 +28,7 @@ import {
   useCredentialsStore,
   useSaveWebauthnCredential,
 } from "features/accounts";
-import { arrayBufferToBase64 } from "shared/helpers";
+import { arrayBufferToBase64 } from "@liftedinit/ui";
 
 const enum CreateSteps {
   first,

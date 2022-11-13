@@ -19,7 +19,7 @@ import { approverRoles, useGetAccountInfo } from "features/accounts";
 import {
   getHoursMinutesSecondsFromSeconds,
   getSecondsFromHoursMinutesSeconds,
-} from "shared/helpers";
+} from "@liftedinit/ui";
 
 export function MultisigSettingsFields({
   accountAddress,

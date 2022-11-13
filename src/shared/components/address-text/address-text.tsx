@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { CopyToClipboard, validateAddress } from "shared/components";
 import { BoxProps, HStack, Text } from "@chakra-ui/react";
 import { Identity } from "@liftedinit/many-js";
-import { makeShortId } from "shared/helpers";
+import { makeShortId } from "@liftedinit/ui";
 
 export function AddressText({
   addressText,
