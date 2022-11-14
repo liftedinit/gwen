@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Run tests
           command: npm run test
-      - run: echo 'export NODE_OPTIONS=--max-old-space-size=4096' >> $BASH_ENV
+      - run: echo 'export NODE_OPTIONS="--max-old-space-size=4096"' >> $BASH_ENV
       - when:
           condition:
             and:
@@ -27,7 +27,7 @@ jobs:
                   equal: ["16.16.0", << parameters.node_version >>]
           steps:
             # node 17+ workaround https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
-            - run: echo 'export NODE_OPTIONS=--max-old-space-size=4096 --openssl-legacy-provider' >> $BASH_ENV
+            - run: echo 'export NODE_OPTIONS="--max-old-space-size=4096 --openssl-legacy-provider"' >> $BASH_ENV
       - run:
           name: Build staging app
           command: npm run build:staging
