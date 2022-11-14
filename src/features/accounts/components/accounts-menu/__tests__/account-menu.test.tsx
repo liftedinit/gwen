@@ -7,7 +7,7 @@ import {
   within,
   waitFor,
   waitForElementToBeRemoved,
-} from "shared/helpers";
+} from "testUtils";
 import { toast } from "@chakra-ui/react";
 import {
   AnonymousIdentity,
