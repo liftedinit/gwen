@@ -1,5 +1,5 @@
 import { Button, Checkbox, useDisclosure, VStack } from "@chakra-ui/react";
-import { Modal, OptionCard } from "shared/components";
+import { Modal, OptionCard } from "@liftedinit/ui";
 import { AccountRole } from "@liftedinit/many-js";
 
 type Props = {

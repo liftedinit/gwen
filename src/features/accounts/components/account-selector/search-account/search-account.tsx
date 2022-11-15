@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { AccountInfo, useGetAccountInfo } from "features/accounts";
-import { useDebounce } from "shared/hooks";
+import { useDebounce } from "@liftedinit/ui";
 import { OnAccountSelected } from "../account-selector";
 
 export function SearchAccount({

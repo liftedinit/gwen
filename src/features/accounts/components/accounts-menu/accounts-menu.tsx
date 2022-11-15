@@ -30,7 +30,7 @@ import {
   EditIcon,
   UserIcon,
   UsbIcon,
-} from "shared/components";
+} from "@liftedinit/ui";
 import { AddAccountModal } from "./add-account-modal";
 import { EditAccountModal } from "./edit-account-modal";
 import { Account, AccountId } from "../../types";

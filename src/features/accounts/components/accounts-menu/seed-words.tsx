@@ -7,7 +7,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { ChevronLeftIcon, Modal } from "shared/components";
+import { ChevronLeftIcon, Modal } from "@liftedinit/ui";
 import { useAccountsStore } from "features/accounts";
 import { Ed25519KeyPairIdentity } from "@liftedinit/many-js";
 import { doesAccountExist } from "features/accounts/utils";

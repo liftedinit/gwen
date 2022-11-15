@@ -17,7 +17,7 @@ import {
   GoogleIcon,
   TwitterIcon,
   FieldWrapper,
-} from "shared/components";
+} from "@liftedinit/ui";
 import { doesAccountExist, useAccountsStore } from "features/accounts";
 import React from "react";
 import { get, useForm } from "react-hook-form";

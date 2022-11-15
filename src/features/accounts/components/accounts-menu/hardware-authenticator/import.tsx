@@ -14,7 +14,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Modal, UsbIcon, ChevronLeftIcon } from "shared/components";
+import { Modal, UsbIcon, ChevronLeftIcon } from "@liftedinit/ui";
 import { AddAccountMethodProps } from "../add-account-modal";
 import {
   useAccountsStore,
@@ -22,7 +22,7 @@ import {
   useGetWebauthnCredential,
 } from "features/accounts";
 import { doesAccountExist } from "features/accounts/utils";
-import { base64ToArrayBuffer } from "shared/helpers";
+import { base64ToArrayBuffer } from "@liftedinit/ui";
 import { RecoverOptions } from "features/accounts/types";
 import { LedgerSafariWarning } from "./ledger-safari-warning";
 

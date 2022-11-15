@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { Box, Text, Heading } from "@chakra-ui/react";
+import { Box, Text, Heading } from "@liftedinit/ui";
 import { NodeEditor, FlumeConfig, Colors, Controls } from "flume";
 import "features/flows/flume.css";
 

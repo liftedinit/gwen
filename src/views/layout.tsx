@@ -1,6 +1,7 @@
 import React from "react";
-import { Grid, GridItem } from "@chakra-ui/react";
-import { Nav, Selectors } from "shared/components";
+import { Flex, Grid, GridItem, Nav } from "@liftedinit/ui";
+import { AccountsMenu } from "features/accounts";
+import { NetworkMenu } from "features/network";
 
 export function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
@@ -9,7 +10,15 @@ export function Layout({ children }: React.PropsWithChildren<{}>) {
         <Nav />
       </GridItem>
       <GridItem>
-        <Selectors />
+        <Flex
+          justify="space-between"
+          alignItems="center"
+          p={2}
+          overflow="hidden"
+        >
+          <AccountsMenu />
+          <NetworkMenu />
+        </Flex>
         {children}
       </GridItem>
     </Grid>

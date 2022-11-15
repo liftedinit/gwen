@@ -1,6 +1,6 @@
 import { AccountInfoData } from "@liftedinit/many-js";
 import { Box, Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react";
-import { AddressText } from "shared/components";
+import { AddressText } from "@liftedinit/ui";
 import { useAccountsStore } from "features/accounts";
 
 export function AccountInfo({

@@ -20,7 +20,7 @@ import {
   ChevronLeftIcon,
   UsbIcon,
   Modal,
-} from "shared/components";
+} from "@liftedinit/ui";
 import { AddAccountMethodProps } from "../add-account-modal";
 import { LedgerSafariWarning } from "./ledger-safari-warning";
 import {
@@ -28,7 +28,7 @@ import {
   useCredentialsStore,
   useSaveWebauthnCredential,
 } from "features/accounts";
-import { arrayBufferToBase64 } from "shared/helpers";
+import { arrayBufferToBase64 } from "@liftedinit/ui";
 
 const enum CreateSteps {
   first,
