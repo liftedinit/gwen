@@ -14,13 +14,13 @@ import {
 import { AddressText } from "@liftedinit/ui";
 import { useTokenList } from "../queries";
 
-interface IToken {
+interface Token {
   name: string;
   symbol: string;
   address: string;
 }
 
-function TokenRow({ name, symbol, address }: IToken) {
+function TokenRow({ name, symbol, address }: Token) {
   return (
     <Tr key={symbol}>
       <Td>{symbol}</Td>
@@ -60,7 +60,6 @@ export function LedgerSettings() {
         </Thead>
         <Tbody>{data.map(TokenRow)}</Tbody>
       </Table>
-      <pre>{isLoading && "[LOADING]"}</pre>
     </Box>
   );
 }
