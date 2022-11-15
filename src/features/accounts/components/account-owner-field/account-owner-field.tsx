@@ -11,7 +11,7 @@ import {
   useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
-import { FieldWrapper, PlusIcon, MinusIcon } from "shared/components";
+import { FieldWrapper, PlusIcon, MinusIcon } from "@liftedinit/ui";
 import { AccountRole } from "@liftedinit/many-js";
 import { Role, RolesSelector } from "features/accounts";
 

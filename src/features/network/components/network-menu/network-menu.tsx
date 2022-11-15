@@ -3,26 +3,28 @@ import { useNetworkStore } from "../../store";
 import {
   Box,
   Button,
+  ChevronDownIcon,
   Circle,
+  EditIcon,
   Flex,
   FormControl,
-  FormLabel,
   FormHelperText,
+  FormLabel,
   HStack,
-  Input,
   IconButton,
+  Input,
   Menu,
   MenuButton,
-  MenuOptionGroup,
-  MenuList,
-  MenuItem,
   MenuDivider,
+  MenuItem,
+  MenuList,
+  MenuOptionGroup,
+  Modal,
   Stack,
   Text,
-  useToast,
   useDisclosure,
-} from "@chakra-ui/react";
-import { Modal, ChevronDownIcon, EditIcon } from "shared/components";
+  useToast,
+} from "@liftedinit/ui";
 import { NetworkId, NetworkParams } from "../../types";
 
 type EditNetwork = [NetworkId, NetworkParams];

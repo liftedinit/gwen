@@ -6,7 +6,7 @@ import {
   TabList,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Modal, PlusIcon } from "shared/components";
+import { Modal, PlusIcon } from "@liftedinit/ui";
 import { SearchAccount } from "./search-account/search-account";
 import { CreateAccount } from "./create-account";
 

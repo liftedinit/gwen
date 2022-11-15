@@ -1,11 +1,4 @@
-import {
-  render,
-  screen,
-  userEvent,
-  fireEvent,
-  within,
-  waitForElementToBeRemoved,
-} from "shared/helpers";
+import { render, screen, userEvent, fireEvent, within } from "testUtils";
 import { NetworkMenu } from "../network-menu";
 
 describe("NetworkMenu", () => {

@@ -9,6 +9,7 @@
     "@emotion/styled": "^11.10.4",
     "@fontsource/rubik": "^4.5.11",
     "@liftedinit/many-js": "^0.1.0-alpha.5",
+    "@liftedinit/ui": "github:stanleyjones/lifted-ui#build",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
