@@ -9,7 +9,7 @@ import {
   Td,
   Th,
 } from "@chakra-ui/react";
-import { AddressText } from "shared/components";
+import { AddressText } from "@liftedinit/ui";
 
 interface IToken {
   name: string;
