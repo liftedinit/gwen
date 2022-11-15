@@ -1,5 +1,6 @@
-import { Address } from "@liftedinit/many-js";
 import {
+  Alert,
+  AlertIcon,
   Box,
   Heading,
   Table,
@@ -8,18 +9,16 @@ import {
   Tr,
   Td,
   Th,
+  Progress,
 } from "@chakra-ui/react";
 import { AddressText } from "@liftedinit/ui";
+import { useTokenList } from "../queries";
 
 interface IToken {
   name: string;
   symbol: string;
-  address: Address;
+  address: string;
 }
-
-const TOKENS_MOCK: IToken[] = [
-  { name: "Manifest", symbol: "MFX", address: new Address() },
-];
 
 function TokenRow({ name, symbol, address }: IToken) {
   return (
@@ -27,13 +26,25 @@ function TokenRow({ name, symbol, address }: IToken) {
       <Td>{symbol}</Td>
       <Td>{name}</Td>
       <Td>
-        <AddressText isFullText addressText={address.toString()} />
+        <AddressText isFullText addressText={address} />
       </Td>
     </Tr>
   );
 }
 
 export function LedgerSettings() {
+  const { data, isError, isLoading } = useTokenList();
+  if (isLoading) {
+    return <Progress isIndeterminate />;
+  }
+  if (isError) {
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        An error has occurred.
+      </Alert>
+    );
+  }
   return (
     <Box p={6} bg="white" mt={9} boxShadow="xl">
       <Heading size="md" mb={6}>
@@ -41,12 +52,15 @@ export function LedgerSettings() {
       </Heading>
       <Table>
         <Thead>
-          <Th>Symbol</Th>
-          <Th>Name</Th>
-          <Th>Address</Th>
+          <Tr>
+            <Th>Symbol</Th>
+            <Th>Name</Th>
+            <Th>Address</Th>
+          </Tr>
         </Thead>
-        <Tbody>{TOKENS_MOCK.map(TokenRow)}</Tbody>
+        <Tbody>{data.map(TokenRow)}</Tbody>
       </Table>
+      <pre>{isLoading && "[LOADING]"}</pre>
     </Box>
   );
 }

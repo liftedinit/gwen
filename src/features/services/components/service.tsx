@@ -10,9 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { FiBox } from "react-icons/fi";
-import { IService } from "../services";
+import { ServiceListing } from "features/services";
 
-export function Service({ name, description, color, disabled }: IService) {
+export function Service({
+  name,
+  description,
+  color,
+  disabled,
+}: ServiceListing) {
   if (disabled) {
     return (
       <WrapItem w="15rem" bg="white" key={name}>
