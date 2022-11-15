@@ -6,8 +6,8 @@ import {
   Flows,
   Home,
   Layout,
-  ModuleSettings,
-  Settings,
+  Services,
+  ServiceSettings,
   Users,
   Splash,
 } from "views";
@@ -37,8 +37,8 @@ export function App() {
       >
         <Route index element={<Home />} />
         <Route path="settings">
-          <Route index element={<Settings />} />
-          <Route path=":module" element={<ModuleSettings />} />
+          <Route index element={<Services />} />
+          <Route path=":service" element={<ServiceSettings />} />
         </Route>
         <Route path="flows">
           <Route index element={<Flows />} />
