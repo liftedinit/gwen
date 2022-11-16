@@ -2,6 +2,8 @@ import {
   Alert,
   AlertIcon,
   Box,
+  Button,
+  Flex,
   Heading,
   Table,
   Tbody,
@@ -10,9 +12,11 @@ import {
   Td,
   Th,
   Progress,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { AddressText } from "@liftedinit/ui";
 import { useTokenList } from "../queries";
+import { CreateTokenModal } from "../components";
 
 interface Token {
   name: string;
@@ -34,6 +38,8 @@ function TokenRow({ name, symbol, address }: Token) {
 
 export function LedgerSettings() {
   const { data, isError, isLoading } = useTokenList();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   if (isLoading) {
     return <Progress isIndeterminate />;
   }
@@ -46,20 +52,28 @@ export function LedgerSettings() {
     );
   }
   return (
-    <Box p={6} bg="white" mt={9} boxShadow="xl">
-      <Heading size="md" mb={6}>
-        All Tokens
-      </Heading>
-      <Table>
-        <Thead>
-          <Tr>
-            <Th>Symbol</Th>
-            <Th>Name</Th>
-            <Th>Address</Th>
-          </Tr>
-        </Thead>
-        <Tbody>{data.map(TokenRow)}</Tbody>
-      </Table>
-    </Box>
+    <>
+      <Box p={6} bg="white" mt={9} boxShadow="xl">
+        <Heading size="md" mb={6}>
+          All Tokens
+        </Heading>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Symbol</Th>
+              <Th>Name</Th>
+              <Th>Address</Th>
+            </Tr>
+          </Thead>
+          <Tbody>{data.map(TokenRow)}</Tbody>
+        </Table>
+        <Flex mt={9} justifyContent="flex-end" w="full">
+          <Button width={{ base: "full", md: "auto" }} onClick={onOpen}>
+            Create Token
+          </Button>
+        </Flex>
+      </Box>
+      {isOpen && <CreateTokenModal isOpen={isOpen} onClose={onClose} />}
+    </>
   );
 }
