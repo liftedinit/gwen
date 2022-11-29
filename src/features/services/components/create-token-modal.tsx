@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Flex,
   Grid,
   GridItem,
@@ -14,12 +16,14 @@ import {
   PopoverTrigger,
   PopoverBody,
   PopoverContent,
+  useToast,
 } from "@liftedinit/ui";
 import { FiInfo } from "react-icons/fi";
 import { useAccountsStore } from "features/accounts";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useCreateToken } from "../queries";
 
-interface CreateTokenInputs {
+export interface CreateTokenInputs {
   name: string;
   symbol: string;
   amount: string;
@@ -33,6 +37,7 @@ export function CreateTokenModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { mutate: doCreateToken, error, isError, isLoading } = useCreateToken();
   const {
     control,
     formState: { errors },
@@ -40,25 +45,27 @@ export function CreateTokenModal({
   } = useForm<CreateTokenInputs>();
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
   const address = account?.address ?? "";
+  const toast = useToast();
 
-  // @TODO: Send the data somewhere
   const onSubmit: SubmitHandler<CreateTokenInputs> = ({
     name,
     symbol,
     amount,
-  }) =>
-    window.alert(
-      JSON.stringify(
-        {
-          name,
-          symbol: symbol.toUpperCase(),
-          amount: parseFloat(amount),
-          address,
+  }) => {
+    doCreateToken(
+      { name, symbol, amount, address },
+      {
+        onSuccess: () => {
+          onClose();
+          toast({
+            status: "success",
+            title: "Create",
+            description: "Token was created",
+          });
         },
-        null,
-        2
-      )
+      }
     );
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -154,6 +161,7 @@ export function CreateTokenModal({
       <Modal.Footer>
         <Flex justifyContent="flex-end" w="full">
           <Button
+            isLoading={isLoading}
             onClick={handleSubmit(onSubmit)}
             width={{ base: "full", md: "auto" }}
             colorScheme="brand.teal"
@@ -161,6 +169,12 @@ export function CreateTokenModal({
             Create
           </Button>
         </Flex>
+        {isError && (
+          <Alert status="error">
+            <AlertIcon />
+            {error}
+          </Alert>
+        )}
       </Modal.Footer>
     </Modal>
   );
