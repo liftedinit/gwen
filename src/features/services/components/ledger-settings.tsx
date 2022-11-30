@@ -13,8 +13,8 @@ import {
   Th,
   Progress,
   useDisclosure,
-} from "@chakra-ui/react";
-import { AddressText } from "@liftedinit/ui";
+  AddressText,
+} from "@liftedinit/ui";
 import { useTokenList } from "../queries";
 import { CreateTokenModal } from "../components";
 

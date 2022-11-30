@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { Alert, AlertIcon, Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Flex, Heading, Text } from "@liftedinit/ui";
 import { SERVICES } from "features/services";
 
 export function ServiceSettings() {

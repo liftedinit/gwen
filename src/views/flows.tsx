@@ -7,7 +7,7 @@ import {
   WrapItem,
   Icon,
   Image,
-} from "@chakra-ui/react";
+} from "@liftedinit/ui";
 import { FiPlus } from "react-icons/fi";
 import webServerScreenshot from "features/flows/assets/web-server.png";
 

@@ -10,8 +10,10 @@ import {
   TagCloseButton,
   useBreakpointValue,
   VStack,
-} from "@chakra-ui/react";
-import { FieldWrapper, PlusIcon, MinusIcon } from "@liftedinit/ui";
+  FieldWrapper,
+  PlusIcon,
+  MinusIcon,
+} from "@liftedinit/ui";
 import { AccountRole } from "@liftedinit/many-js";
 import { Role, RolesSelector } from "features/accounts";
 

@@ -13,13 +13,11 @@ import {
   Radio,
   HStack,
   Select,
-} from "@chakra-ui/react";
-import { FieldWrapper } from "@liftedinit/ui";
-import { approverRoles, useGetAccountInfo } from "features/accounts";
-import {
+  FieldWrapper,
   getHoursMinutesSecondsFromSeconds,
   getSecondsFromHoursMinutesSeconds,
 } from "@liftedinit/ui";
+import { approverRoles, useGetAccountInfo } from "features/accounts";
 
 export function MultisigSettingsFields({
   accountAddress,

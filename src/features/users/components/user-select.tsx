@@ -14,7 +14,7 @@ import {
   SimpleGrid,
   Text,
   VStack,
-} from "@chakra-ui/react";
+} from "@liftedinit/ui";
 import { FaUserCircle } from "react-icons/fa";
 import { FiChevronDown } from "react-icons/fi";
 import { CgUsb } from "react-icons/cg";

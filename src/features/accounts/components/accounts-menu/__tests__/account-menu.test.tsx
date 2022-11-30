@@ -8,7 +8,7 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "testUtils";
-import { toast } from "@chakra-ui/react";
+import { toast } from "@liftedinit/ui";
 import {
   AnonymousIdentity,
   Ed25519KeyPairIdentity,

@@ -23,8 +23,6 @@ import {
   Text,
   useDisclosure,
   VStack,
-} from "@chakra-ui/react";
-import {
   AddressText,
   ChevronDownIcon,
   EditIcon,
