@@ -2,12 +2,27 @@ import React from "react";
 import { Flex, Grid, GridItem, Nav } from "@liftedinit/ui";
 import { AccountsMenu } from "features/accounts";
 import { NetworkMenu } from "features/network";
+import {
+  RiHome2Line,
+  RiServerLine,
+  RiFlowChart,
+  RiUserLine,
+  RiBankCardLine,
+} from "react-icons/ri";
+
+const navItems = [
+  { label: "Dashboard", path: "", icon: RiHome2Line },
+  { label: "Services", path: "settings", icon: RiServerLine },
+  { label: "Flows", path: "flows", icon: RiFlowChart },
+  { label: "Users", path: "users", icon: RiUserLine },
+  { label: "Billing", path: "account", icon: RiBankCardLine },
+];
 
 export function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <Grid h="100%" gap={3} templateColumns="12rem 1fr">
       <GridItem bg="white">
-        <Nav />
+        <Nav navItems={navItems} />
       </GridItem>
       <GridItem>
         <Flex

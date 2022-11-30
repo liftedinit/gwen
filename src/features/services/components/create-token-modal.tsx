@@ -172,7 +172,7 @@ export function CreateTokenModal({
         {isError && (
           <Alert status="error">
             <AlertIcon />
-            {error}
+            {error.message}
           </Alert>
         )}
       </Modal.Footer>
