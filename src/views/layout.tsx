@@ -1,7 +1,5 @@
 import React from "react";
 import { Flex, Grid, GridItem, Nav } from "@liftedinit/ui";
-import { AccountsMenu } from "features/accounts";
-import { NetworkMenu } from "features/network";
 import {
   RiHome2Line,
   RiServerLine,
@@ -9,6 +7,8 @@ import {
   RiFlowChart,
   RiBankCardLine,
 } from "react-icons/ri";
+import { AccountsMenu } from "features/accounts";
+import { NetworkMenu } from "features/network";
 
 const navItems = [
   { label: "Dashboard", path: "", icon: RiHome2Line },
