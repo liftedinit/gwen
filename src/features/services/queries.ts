@@ -1,21 +1,29 @@
 import { useNetworkContext } from "features/network";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 import { CreateTokenInputs } from "features/services";
 
 interface LedgerInfoResponse {
   symbols: Map<string, string>;
 }
 
+interface TokenInfo {
+  address: string;
+  summary: {
+    name: string;
+    symbol: string;
+    precision: number;
+  };
+  owner: string;
+}
+
 export function useTokenList() {
   const [network] = useNetworkContext();
-
   const query = useQuery<LedgerInfoResponse, Error>({
     queryKey: ["ledger.tokens", network?.url],
     queryFn: async () => await network?.ledger.info(),
     enabled: !!network?.url,
     initialData: { symbols: new Map() } as LedgerInfoResponse,
   });
-
   const symbols = query?.data?.symbols ?? new Map();
   const data = Array.from(symbols, (symbol: [string, string]) => {
     return {
@@ -24,8 +32,28 @@ export function useTokenList() {
       address: symbol[0],
     };
   });
-
   return { ...query, data };
+}
+
+export function useTokenInfo() {
+  const [network] = useNetworkContext();
+  const { data: tokenListData } = useTokenList();
+  const queries = useQueries<TokenInfo[]>({
+    queries: tokenListData.map(({ address, symbol }) => ({
+      queryKey: ["tokens.info", symbol, network?.url],
+      queryFn: async () => await network?.tokens.info({ address }),
+    })),
+  });
+  const data = queries.map(({ data: tokenInfo }) => ({
+    name: (tokenInfo as TokenInfo).summary?.name,
+    address: (tokenInfo as TokenInfo).address,
+    symbol: (tokenInfo as TokenInfo).summary?.symbol,
+  }));
+  return {
+    isLoading: queries.some((query) => query.isLoading),
+    isError: queries.some((query) => query.isError),
+    data,
+  };
 }
 
 export function useCreateToken() {

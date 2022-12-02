@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { AddressText } from "@liftedinit/ui";
-import { useTokenList } from "../queries";
+import { useTokenInfo, useTokenList } from "../queries";
 import { CreateTokenModal } from "../components";
 
 interface Token {
