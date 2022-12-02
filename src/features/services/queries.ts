@@ -7,13 +7,15 @@ interface LedgerInfoResponse {
 }
 
 interface TokenInfo {
-  address: string;
-  summary: {
-    name: string;
-    symbol: string;
-    precision: number;
+  info: {
+    address: string;
+    summary: {
+      name: string;
+      symbol: string;
+      precision: number;
+    };
+    owner: string;
   };
-  owner: string;
 }
 
 export function useTokenList() {
@@ -22,33 +24,34 @@ export function useTokenList() {
     queryKey: ["ledger.tokens", network?.url],
     queryFn: async () => await network?.ledger.info(),
     enabled: !!network?.url,
-    initialData: { symbols: new Map() } as LedgerInfoResponse,
   });
-  const symbols = query?.data?.symbols ?? new Map();
-  const data = Array.from(symbols, (symbol: [string, string]) => {
-    return {
-      name: symbol[1],
-      symbol: symbol[1],
-      address: symbol[0],
-    };
-  });
+  const data = query.data?.symbols;
   return { ...query, data };
 }
 
 export function useTokenInfo() {
   const [network] = useNetworkContext();
-  const { data: tokenListData } = useTokenList();
+  const { data: tokenListData = new Map() } = useTokenList();
   const queries = useQueries<TokenInfo[]>({
-    queries: tokenListData.map(({ address, symbol }) => ({
-      queryKey: ["tokens.info", symbol, network?.url],
+    queries: [...tokenListData.entries()].map(([address]) => ({
+      queryKey: ["tokens.info", address, network?.url],
       queryFn: async () => await network?.tokens.info({ address }),
     })),
   });
-  const data = queries.map(({ data: tokenInfo }) => ({
-    name: (tokenInfo as TokenInfo).summary?.name,
-    address: (tokenInfo as TokenInfo).address,
-    symbol: (tokenInfo as TokenInfo).summary?.symbol,
-  }));
+  const data = queries.map(({ data }) => {
+    const token = data as TokenInfo;
+    return token
+      ? {
+          name: token.info.summary.name,
+          address: token.info.address.toString(),
+          symbol: token.info.summary.symbol,
+        }
+      : {
+          name: "",
+          address: "",
+          symbol: "",
+        };
+  });
   return {
     isLoading: queries.some((query) => query.isLoading),
     isError: queries.some((query) => query.isError),
@@ -63,15 +66,19 @@ export function useCreateToken() {
 
   return useMutation<unknown, Error, CreateTokenInputs>({
     mutationFn: async (inputs: CreateTokenInputs) => {
+      const precision = 9;
+      const amount = BigInt(parseInt(inputs.amount) * 10 ** precision);
+      const symbol = inputs.symbol.toUpperCase();
+
       const param = {
         summary: {
           name: inputs.name,
-          symbol: inputs.symbol.toUpperCase(),
-          precision: 9,
+          symbol,
+          precision,
         },
         owner: inputs.address,
         distribution: {
-          [inputs.address]: BigInt(inputs.amount),
+          [inputs.address]: amount,
         },
       };
       network?.tokens.create(param);

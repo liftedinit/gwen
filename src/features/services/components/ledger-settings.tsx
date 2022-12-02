@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { AddressText } from "@liftedinit/ui";
-import { useTokenList } from "../queries";
+import { useTokenInfo } from "../queries";
 import { CreateTokenModal } from "../components";
 import { useAccountsStore } from "features/accounts";
 import { ANON_IDENTITY } from "@liftedinit/many-js";
@@ -27,6 +27,7 @@ interface Token {
 }
 
 function TokenRow({ name, symbol, address }: Token) {
+  console.log(name, symbol, address);
   return (
     <Tr key={symbol}>
       <Td>{symbol}</Td>
@@ -40,7 +41,7 @@ function TokenRow({ name, symbol, address }: Token) {
 
 export function LedgerSettings() {
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
-  const { data, isError, isLoading } = useTokenList();
+  const { data, isError, isLoading } = useTokenInfo();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (isLoading) {
