@@ -1,4 +1,3 @@
-import { Address } from "@liftedinit/many-js";
 import { useNetworkContext } from "features/network";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { CreateTokenInputs } from "features/services";
@@ -36,15 +35,16 @@ export function useCreateToken() {
 
   return useMutation<unknown, Error, CreateTokenInputs>({
     mutationFn: async (inputs: CreateTokenInputs) => {
-      const address = Address.fromString(inputs.address);
       const param = {
         summary: {
           name: inputs.name,
           symbol: inputs.symbol.toUpperCase(),
           precision: 9,
         },
-        owner: address,
-        distribution: new Map([[address, BigInt(inputs.amount)]]),
+        owner: inputs.address,
+        distribution: {
+          [inputs.address]: BigInt(inputs.amount),
+        },
       };
       network?.tokens.create(param);
     },
