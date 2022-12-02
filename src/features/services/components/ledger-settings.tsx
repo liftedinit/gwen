@@ -15,8 +15,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { AddressText } from "@liftedinit/ui";
-import { useTokenInfo, useTokenList } from "../queries";
+import { useTokenList } from "../queries";
 import { CreateTokenModal } from "../components";
+import { useAccountsStore } from "features/accounts";
+import { ANON_IDENTITY } from "@liftedinit/many-js";
 
 interface Token {
   name: string;
@@ -37,6 +39,7 @@ function TokenRow({ name, symbol, address }: Token) {
 }
 
 export function LedgerSettings() {
+  const account = useAccountsStore((s) => s.byId.get(s.activeId));
   const { data, isError, isLoading } = useTokenList();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -67,11 +70,13 @@ export function LedgerSettings() {
           </Thead>
           <Tbody>{data.map(TokenRow)}</Tbody>
         </Table>
-        <Flex mt={9} justifyContent="flex-end" w="full">
-          <Button width={{ base: "full", md: "auto" }} onClick={onOpen}>
-            Create Token
-          </Button>
-        </Flex>
+        {account?.address !== ANON_IDENTITY && (
+          <Flex mt={9} justifyContent="flex-end" w="full">
+            <Button width={{ base: "full", md: "auto" }} onClick={onOpen}>
+              Create Token
+            </Button>
+          </Flex>
+        )}
       </Box>
       {isOpen && <CreateTokenModal isOpen={isOpen} onClose={onClose} />}
     </>
