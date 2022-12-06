@@ -1,4 +1,4 @@
-import { Box, Stack, Text, Heading, HStack, Icon } from "@chakra-ui/react";
+import { Box, Stack, Text, Heading, HStack, Icon } from "@liftedinit/ui";
 import { IconType } from "react-icons";
 
 interface IStat {

@@ -7,7 +7,7 @@ import {
   InputRightElement,
   Spacer,
   Wrap,
-} from "@chakra-ui/react";
+} from "@liftedinit/ui";
 import { FiSearch } from "react-icons/fi";
 import { Service } from "features/services";
 import { useServicesStore } from "features/services/store";

@@ -14,7 +14,7 @@ import {
   Text,
   Tag,
   SimpleGrid,
-} from "@chakra-ui/react";
+} from "@liftedinit/ui";
 import { FiUser, FiUsers, FiCheck } from "react-icons/fi";
 import { TbBuildingSkyscraper } from "react-icons/tb";
 

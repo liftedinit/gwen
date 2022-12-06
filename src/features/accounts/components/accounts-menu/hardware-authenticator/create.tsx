@@ -14,12 +14,11 @@ import {
   Text,
   VStack,
   useToast,
-} from "@chakra-ui/react";
-import {
   CopyToClipboard,
   ChevronLeftIcon,
   UsbIcon,
   Modal,
+  arrayBufferToBase64,
 } from "@liftedinit/ui";
 import { AddAccountMethodProps } from "../add-account-modal";
 import { LedgerSafariWarning } from "./ledger-safari-warning";
@@ -28,7 +27,6 @@ import {
   useCredentialsStore,
   useSaveWebauthnCredential,
 } from "features/accounts";
-import { arrayBufferToBase64 } from "@liftedinit/ui";
 
 const enum CreateSteps {
   first,

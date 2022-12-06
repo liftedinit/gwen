@@ -7,7 +7,7 @@ import {
   Text,
   Icon,
   Stack,
-} from "@chakra-ui/react";
+} from "@liftedinit/ui";
 import { Link } from "react-router-dom";
 import { FiBox } from "react-icons/fi";
 import { ServiceListing } from "features/services";

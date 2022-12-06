@@ -7,9 +7,9 @@ import {
   Input,
   Spinner,
   Text,
-} from "@chakra-ui/react";
+  useDebounce,
+} from "@liftedinit/ui";
 import { AccountInfo, useGetAccountInfo } from "features/accounts";
-import { useDebounce } from "@liftedinit/ui";
 import { OnAccountSelected } from "../account-selector";
 
 export function SearchAccount({

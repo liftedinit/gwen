@@ -7,8 +7,9 @@ import {
   HStack,
   Input,
   useToast,
-} from "@chakra-ui/react";
-import { AddressText, Modal } from "@liftedinit/ui";
+  AddressText,
+  Modal,
+} from "@liftedinit/ui";
 import { useAccountsStore, AccountId, Account } from "../../index";
 import { AnonymousIdentity } from "@liftedinit/many-js";
 

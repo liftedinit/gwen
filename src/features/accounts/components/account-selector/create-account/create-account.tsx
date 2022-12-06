@@ -21,8 +21,6 @@ import {
   useBreakpointValue,
   VStack,
   useToast,
-} from "@chakra-ui/react";
-import {
   OptionCard,
   DataField,
   TxnExpireText,

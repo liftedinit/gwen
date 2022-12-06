@@ -12,7 +12,7 @@ import {
   Th,
   Tbody,
   Td,
-} from "@chakra-ui/react";
+} from "@liftedinit/ui";
 import { FiEdit } from "react-icons/fi";
 
 const users = [

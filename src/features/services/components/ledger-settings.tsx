@@ -13,8 +13,8 @@ import {
   Th,
   Progress,
   useDisclosure,
-} from "@chakra-ui/react";
-import { AddressText } from "@liftedinit/ui";
+  AddressText,
+} from "@liftedinit/ui";
 import { useTokenInfo } from "../queries";
 import { CreateTokenModal } from "../components";
 import { useAccountsStore } from "features/accounts";
@@ -27,7 +27,6 @@ interface Token {
 }
 
 function TokenRow({ name, symbol, address }: Token) {
-  console.log(name, symbol, address);
   return (
     <Tr key={symbol}>
       <Td>{symbol}</Td>

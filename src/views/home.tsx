@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid } from "@liftedinit/ui";
 import Chart from "react-apexcharts";
 import { RiArrowLeftRightLine, RiCoinLine, RiUserLine } from "react-icons/ri";
 import { Stat } from "features/dashboard";
