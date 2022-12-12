@@ -76,6 +76,12 @@ export const SERVICES: ServiceListing[] = [
     color: "grey",
     disabled: true,
   },
+  {
+    name: "Data",
+    description: "Map keys to arbitrary values",
+    color: "orangered",
+    disabled: false,
+  },
 ];
 
 interface ServicesState {
