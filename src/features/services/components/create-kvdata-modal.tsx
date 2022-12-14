@@ -60,7 +60,7 @@ export function CreateKVDataModal({
       <Modal.Header>New Entry</Modal.Header>
       <Modal.Body>
         <Grid templateColumns="repeat(2,1fr)" gap={9}>
-          <GridItem colSpan={3}>
+          <GridItem colSpan={4}>
             <FormControl isInvalid={!!errors.key}>
               <FormLabel htmlFor="key">Key</FormLabel>
               <Controller
@@ -79,7 +79,7 @@ export function CreateKVDataModal({
               )}
             </FormControl>
           </GridItem>
-          <GridItem colSpan={2}>
+          <GridItem colSpan={4}>
             <FormControl isInvalid={!!errors.value}>
               <FormLabel htmlFor="value">Value</FormLabel>
               <Controller
