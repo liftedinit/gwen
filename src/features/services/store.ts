@@ -81,6 +81,7 @@ export const SERVICES: ServiceListing[] = [
     description: "Map keys to arbitrary values",
     color: "orangered",
     disabled: false,
+    component: DataSettings,
   },
 ];
 
