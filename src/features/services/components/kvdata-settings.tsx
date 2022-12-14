@@ -10,31 +10,49 @@ import {
   Td,
   Th,
   AddressText,
+  useDisclosure,
+  Alert,
+  AlertIcon,
+  Progress
 } from "@liftedinit/ui";
 import { useAccountsStore } from "features/accounts";
 import { ANON_IDENTITY } from "@liftedinit/many-js";
+import { useKVDataInfo } from "../queries";
+import { CreateKVDataModal } from "../components/create-kvdata-modal";
 
 interface KVData {
-  name: string;
-  symbol: string;
-  address: string;
+  key: string;
+  value: string;
+  tag: string;
 }
 
-function KVDataRow({ name, symbol, address }: KVData) {
+function KVDataRow({ key, value, tag }: KVData) {
   return (
-    <Tr key={symbol}>
-      <Td>{symbol}</Td>
-      <Td>{name}</Td>
-      <Td>
-        <AddressText isFullText addressText={address} />
-      </Td>
+    <Tr key={key}>
+      <Td>{key}</Td>
+      <Td>{value}</Td>
+      <Td>{tag}</Td>
     </Tr>
   );
 }
 
 export function KVDataSettings() {
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
+  const { data, isError, isLoading } = useKVDataInfo();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  if (isLoading) {
+    return <Progress isIndeterminate />;
+  }
+  if (isError) {
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        An error has occurred.
+      </Alert>
+    );
+  }
+  
   return (
     <>
       <Box p={6} bg="white" mt={9} boxShadow="xl">
@@ -53,13 +71,14 @@ export function KVDataSettings() {
           <Tbody></Tbody>
         </Table>
         {account?.address !== ANON_IDENTITY && (
-          <Flex mt={9} justifyContent="flex-end" w="full">
-            <Button bg="teal" color="white" width={{ base: "full", md: "auto" }}>
+          <Flex mt={9} justifyContent="flex-end" w="full" >
+            <Button bg="teal" color="white" width={{ base: "full", md: "auto" }} onClick={onOpen}>
               Create New Key
             </Button>
           </Flex>
         )}
-      </Box>      
+      </Box>
+      {isOpen && <CreateKVDataModal isOpen={isOpen} onClose={onClose} />}      
     </>
   );
 }
