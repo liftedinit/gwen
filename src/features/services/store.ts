@@ -1,5 +1,5 @@
 import create from "zustand";
-import { LedgerSettings } from "./components";
+import { BlocksSettings, DataSettings, LedgerSettings } from "./components";
 
 export interface ServiceListing {
   name: string;
@@ -11,16 +11,22 @@ export interface ServiceListing {
 
 export const SERVICES: ServiceListing[] = [
   {
+    name: "Blocks",
+    description: "Write to an immutable public data structure",
+    color: "crimson",
+    component: BlocksSettings,
+  },
+  {
     name: "Ledger",
     description: "Mint your own tokens",
     color: "orangered",
     component: LedgerSettings,
   },
   {
-    name: "Blocks",
-    description: "Write to an immutable public data structure",
-    color: "red",
-    disabled: true,
+    name: "Data",
+    description: "Map keys to arbitrary values",
+    color: "darkorchid",
+    component: DataSettings,
   },
   {
     name: "Accounts",
@@ -38,12 +44,6 @@ export const SERVICES: ServiceListing[] = [
     name: "Web",
     description: "Translate HTTP requests to Many messages",
     color: "rebeccapurple",
-    disabled: true,
-  },
-  {
-    name: "Dictionary",
-    description: "Map keys to arbitrary values",
-    color: "mediumpurple",
     disabled: true,
   },
   {
