@@ -1,4 +1,3 @@
-import { KeyValueService } from "@liftedinit/many-js";
 import { useNetworkContext } from "features/network";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 import { CreateTokenInputs, PutValueInputs } from "features/services";
@@ -95,12 +94,10 @@ export function usePutValue() {
   // eslint-disable-next-line
   const [_, network] = useNetworkContext();
   const queryClient = useQueryClient();
-  const { url, id } = network!;
-  const kv = new KeyValueService(url, id);
 
   return useMutation<unknown, Error, PutValueInputs>({
     mutationFn: async (inputs: PutValueInputs) => {
-      await kv.put(inputs);
+      await network?.kvStore.put(inputs);
     },
     onSuccess: () =>
       // @TODO: Invalidate the query from liftedinit/roadmap#17

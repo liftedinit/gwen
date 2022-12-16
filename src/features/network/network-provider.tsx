@@ -8,6 +8,7 @@ import {
   Base,
   Events,
   Tokens,
+  KvStore,
 } from "@liftedinit/many-js";
 import { useNetworkStore } from "./store";
 import { useAccountsStore } from "features/accounts";
@@ -30,9 +31,17 @@ export function NetworkProvider({ children }: React.PropsWithChildren<{}>) {
     const identity = activeAccount?.identity ?? anonIdentity;
     const url = activeNetwork?.url || "";
     const queryNetwork = new Network(url, anonIdentity);
-    queryNetwork.apply([Ledger, IdStore, Account, Events, Base, Tokens]);
+    queryNetwork.apply([
+      Ledger,
+      IdStore,
+      Account,
+      Events,
+      Base,
+      Tokens,
+      KvStore,
+    ]);
     const cmdNetwork = new Network(url, identity);
-    cmdNetwork.apply([Ledger, IdStore, Account, Tokens]);
+    cmdNetwork.apply([Ledger, IdStore, Account, Tokens, KvStore]);
     return [queryNetwork, cmdNetwork] as [Network, Network];
   }, [activeNetwork, activeAccount]);
 
