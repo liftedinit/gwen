@@ -9,7 +9,6 @@ import {
   Tr,
   Td,
   Th,
-  AddressText,
   useDisclosure,
   Alert,
   AlertIcon,
