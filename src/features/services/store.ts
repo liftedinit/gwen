@@ -1,5 +1,5 @@
 import create from "zustand";
-import { BlocksSettings, DataSettings, LedgerSettings } from "./components";
+import { BlocksSettings, KVDataSettings, LedgerSettings } from "./components";
 
 export interface ServiceListing {
   name: string;
@@ -26,7 +26,7 @@ export const SERVICES: ServiceListing[] = [
     name: "Data",
     description: "Map keys to arbitrary values",
     color: "darkorchid",
-    component: DataSettings,
+    component: KVDataSettings,
   },
   {
     name: "Accounts",
@@ -75,13 +75,6 @@ export const SERVICES: ServiceListing[] = [
     description: "Connect to AWS Simple Storage Service buckets",
     color: "grey",
     disabled: true,
-  },
-  {
-    name: "Data",
-    description: "Map keys to arbitrary values",
-    color: "orangered",
-    disabled: false,
-    component: DataSettings,
   },
 ];
 
