@@ -1,7 +1,6 @@
 import { useNetworkContext } from "features/network";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
-import { CreateTokenInputs, KVDataSettings } from "features/services";
-import { CreateKVDataInputs } from "./components/create-kvdata-modal";
+import { CreateTokenInputs, CreateKVDataInputs } from "features/services";
 
 interface LedgerInfoResponse {
   symbols: Map<string, string>;
@@ -19,12 +18,8 @@ interface TokenInfo {
   };
 }
 interface KVDataInfo {
-  info: {
-    summary: {
-      key: string;
-      value: string;
-    };
-  };
+  key: string;
+  value: string;
 }
 export function useTokenList() {
   const [network] = useNetworkContext();
@@ -97,7 +92,7 @@ export function useCreateToken() {
       }),
   });
 }
-// work to do
+// wip
 export function useKVDataInfo() {
   return {
     isLoading: false,
@@ -105,14 +100,20 @@ export function useKVDataInfo() {
     data:{},
   };
 }
-// work to do
+// wip
 export function useCreateKVData() {
   
-  return useMutation<unknown, Error, CreateKVDataInputs>({
-    mutationFn: async (inputs: CreateKVDataInputs) => {
-    },
-    onSuccess: () =>
-      {
-      },
-  });
+// eslint-disable-next-line
+const [_, network] = useNetworkContext();
+const queryClient = useQueryClient();
+
+return useMutation<unknown, Error, CreateKVDataInputs>({
+  mutationFn: async (inputs: CreateKVDataInputs) => {
+    await network?.kvStore.put(inputs);
+  },
+  onSuccess: () =>
+    queryClient.invalidateQueries({
+      queryKey: ["", network?.url],
+    }),
+});
 }
