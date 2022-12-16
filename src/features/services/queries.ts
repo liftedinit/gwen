@@ -1,7 +1,6 @@
 import { useNetworkContext } from "features/network";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
-import { CreateTokenInputs, KVDataSettings } from "features/services";
-import { CreateKVDataInputs } from "./components/create-kvdata-modal";
+import { CreateTokenInputs, CreateKVDataInputs } from "features/services";
 
 interface LedgerInfoResponse {
   symbols: Map<string, string>;
