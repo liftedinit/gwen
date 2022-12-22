@@ -24,7 +24,7 @@ interface KVData {
   value: string;
   tag: string;
 }
-
+// eslint-disable-next-line
 function KVDataRow({ key, value, tag }: KVData) {
   return (
     <Tr key={key}>
@@ -37,6 +37,7 @@ function KVDataRow({ key, value, tag }: KVData) {
 
 export function KVDataSettings() {
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
+  // eslint-disable-next-line
   const { data, isError, isLoading } = useKVDataInfo();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
