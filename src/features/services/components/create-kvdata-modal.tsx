@@ -7,14 +7,13 @@ import {
   Button,
   Modal,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   useToast,
   Textarea,
 } from "@liftedinit/ui";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useCreateKVData } from "../queries";
+import { useCreateKVData} from "../queries";
 
 export interface CreateKVDataInputs {
   key: string;
@@ -36,9 +35,9 @@ export function CreateKVDataModal({
   } = useForm<CreateKVDataInputs>();
   const toast = useToast();
 
-  const onSubmit: SubmitHandler<CreateKVDataInputs> = ({
-    key,
-    value,
+  const onSubmit: SubmitHandler<CreateKVDataInputs> = ({ 
+    key, 
+    value 
   }) => {
     doCreateKVData(
       { key, value },
@@ -59,46 +58,27 @@ export function CreateKVDataModal({
     <Modal isOpen={isOpen} onClose={onClose}>
       <Modal.Header>New Entry</Modal.Header>
       <Modal.Body>
-        <Grid templateColumns="repeat(2,1fr)" gap={9}>
-          <GridItem colSpan={4}>
+        <Grid templateColumns="repeat(5,1fr)" gap={9}>
+          <GridItem colSpan={5}>
             <FormControl isInvalid={!!errors.key}>
               <FormLabel htmlFor="key">Key</FormLabel>
               <Controller
                 name="key"
                 control={control}
-                rules={{
-                  required: true,
-                  maxLength: 50,
-                }}
-                render={({ field }) => (
-                  <Input placeholder="My Key" {...field} />
-                )}
+                rules={{ required: true }}
+                render={({ field }) => <Input {...field} />}
               />
-              {errors.key && (
-                <FormErrorMessage>Must contain only letters.</FormErrorMessage>
-              )}
             </FormControl>
           </GridItem>
-          <GridItem colSpan={4}>
+          <GridItem colSpan={5}>
             <FormControl isInvalid={!!errors.value}>
               <FormLabel htmlFor="value">Value</FormLabel>
               <Controller
                 name="value"
                 control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field }) => (
-                  <Textarea size='100%'
-                    sx={{ textTransform: "uppercase" }}
-                    placeholder="value"
-                    {...field}
-                  />
-                )}
+                rules={{ required: true }}
+                render={({ field }) => <Textarea {...field} />}
               />
-              {errors.value && (
-                <FormErrorMessage>Must be 1 to 100 letters.</FormErrorMessage>
-              )}
             </FormControl>
           </GridItem>
         </Grid>
@@ -111,7 +91,7 @@ export function CreateKVDataModal({
             width={{ base: "full", md: "auto" }}
             colorScheme="brand.teal"
           >
-            Create Entry
+            Save
           </Button>
         </Flex>
         {isError && (
