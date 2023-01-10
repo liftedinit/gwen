@@ -17,10 +17,17 @@ interface TokenInfo {
     owner: string;
   };
 }
+
+interface KVDataInfoResponse {
+  symbols: Map<string, string>;
+}
+// eslint-disable-next-line
 interface KVDataInfo {
   key: string;
   value: string;
+  tag: string;
 }
+
 export function useTokenList() {
   const [network] = useNetworkContext();
   const query = useQuery<LedgerInfoResponse, Error>({
@@ -92,17 +99,30 @@ export function useCreateToken() {
       }),
   });
 }
-// wip
+// wip to do
+export function useKvstoreList() {
+  const [network] = useNetworkContext();
+  const query = useQuery<KVDataInfoResponse, Error>({
+    queryKey: ["kvstore.info", network?.url],
+    queryFn: async () => await network?.kvstore.info(),
+    enabled: !!network?.url,
+  });
+  const data = query.data;
+  return { ...query, data };
+}
+// wip to do
 export function useKVDataInfo() {
+  // eslint-disable-next-line
+  const [network] = useNetworkContext();
+
   return {
     isLoading: false,
     isError: false,
     data:{},
   };
 }
-// wip
+
 export function useCreateKVData() {
-  
 // eslint-disable-next-line
 const [_, network] = useNetworkContext();
 const queryClient = useQueryClient();
