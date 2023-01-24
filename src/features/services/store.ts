@@ -130,7 +130,8 @@ export const useDataServiceStore = create<
   persist(
     (set) => ({
       keys: [],
-      addKey: (key: string) => set((s) => ({ keys: [...s.keys, key] })),
+      addKey: (key: string) =>
+        set((s) => ({ keys: [...new Set([...s.keys, key])] })),
       delKey: (key: string) =>
         set((s) => ({ keys: s.keys.filter((k) => k !== key) })),
     }),
