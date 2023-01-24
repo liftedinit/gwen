@@ -7,38 +7,18 @@ import {
   Tbody,
   Thead,
   Tr,
-  Td,
   Th,
   useDisclosure,
 } from "@liftedinit/ui";
 import { PutValueModal } from "../components";
 import { useAccountsStore } from "features/accounts";
 import { ANON_IDENTITY } from "@liftedinit/many-js";
-// import { useDataServiceStore } from "features/services";
-
-interface KVData {
-  key: string;
-  value: string;
-  tag: string;
-}
-
-// eslint-disable-next-line
-function KVDataRow({ key, value, tag }: KVData) {
-  return (
-    <Tr key={key}>
-      <Td>{key}</Td>
-      <Td>{value}</Td>
-      <Td>{tag}</Td>
-    </Tr>
-  );
-}
+import { KVDataRow} from "./kvdatarow";
 
 export function DataSettings() {
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
-  // @TODO: Fetch all the keys
-  // const keys = useDataServiceStore((s) => s.keys);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  
   return (
     <>
       <Box p={6} bg="white" mt={9} boxShadow="xl">
@@ -54,7 +34,7 @@ export function DataSettings() {
               <Th>Edit</Th>
             </Tr>
           </Thead>
-          <Tbody></Tbody>
+          <Tbody>{KVDataRow()}</Tbody>
         </Table>
         {account?.address !== ANON_IDENTITY && (
           <Flex mt={9} justifyContent="flex-end" w="full">
