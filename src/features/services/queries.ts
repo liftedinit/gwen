@@ -16,7 +16,7 @@ interface LedgerInfoResponse {
   symbols: Map<string, string>;
 }
 
-interface TokenInfo {
+export interface TokenInfo {
   info: {
     address: string;
     summary: {
@@ -50,17 +50,8 @@ export function useTokenInfo(
     queries: tokenList.data
       ? [...tokenList.data.symbols.entries()].map(([address]) => ({
           queryKey: ["tokens", address],
-          queryFn: async () =>
-            await network?.tokens.info({
-              address:
-                "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz",
-            }),
+          queryFn: async () => await network?.tokens.info({ address }),
           enabled: !!network?.url,
-          selected: (data: TokenInfo) => ({
-            name: data.info.summary.name,
-            address,
-            symbol: data.info.summary.symbol,
-          }),
         }))
       : [],
   });
@@ -88,7 +79,7 @@ export function useCreateToken() {
           [inputs.address]: amount,
         },
       };
-      network?.tokens.create(param);
+      return await network?.tokens.create(param);
     },
     onSuccess: () =>
       queryClient.invalidateQueries({
