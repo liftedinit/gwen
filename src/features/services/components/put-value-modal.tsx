@@ -23,9 +23,11 @@ export interface PutValueInputs {
 export function PutValueModal({
   isOpen,
   onClose,
+  itemKey,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  itemKey: string;
 }) {
   const { mutate: doPutValue, error, isError, isLoading } = usePutValue();
   const {
@@ -64,6 +66,7 @@ export function PutValueModal({
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => <Input {...field} />}
+                defaultValue={itemKey}
               />
             </FormControl>
           </GridItem>

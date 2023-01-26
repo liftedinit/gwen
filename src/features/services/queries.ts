@@ -5,6 +5,10 @@ import {
   CreateTokenInputs,
   PutValueInputs,
 } from "features/services";
+import {
+  KVStoreQuery,
+  KVStoreValue,
+} from "@liftedinit/many-js/dist/network/modules/kvStore/types";
 
 interface LedgerInfoResponse {
   symbols: Map<string, string>;
@@ -106,11 +110,35 @@ export function usePutValue() {
     },
     onSuccess: (_, inputs) => {
       addKey(inputs.key);
-
-      // @TODO: Invalidate the query from liftedinit/roadmap#17
-      queryClient.invalidateQueries({
-        queryKey: ["", network?.url],
-      });
+      queryClient.invalidateQueries(["data"]);
     },
+  });
+}
+
+export function useGetValues(keys: string[]) {
+  // eslint-disable-next-line
+  const [network] = useNetworkContext();
+
+  return useQueries({
+    queries: keys.map((key) => ({
+      queryKey: ["data", key, "value"],
+      queryFn: async () => await network?.kvStore.get({ key }),
+      select: (data: KVStoreValue) => ({ ...data, key }),
+      enabled: !!network?.url,
+    })),
+  });
+}
+
+export function useQueryValues(keys: string[]) {
+  // eslint-disable-next-line
+  const [network] = useNetworkContext();
+
+  return useQueries({
+    queries: keys.map((key) => ({
+      queryKey: ["data", key, "query"],
+      queryFn: async () => await network?.kvStore.query({ key }),
+      select: (data: KVStoreQuery) => ({ ...data, key }),
+      enabled: !!network?.url,
+    })),
   });
 }

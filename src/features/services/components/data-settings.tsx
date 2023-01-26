@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -10,34 +11,82 @@ import {
   Td,
   Th,
   useDisclosure,
+  Progress,
+  Alert,
+  AlertIcon,
+  Tag,
+  EditIcon,
 } from "@liftedinit/ui";
 import { PutValueModal } from "../components";
-import { useAccountsStore } from "features/accounts";
+import { Account, useAccountsStore } from "features/accounts";
 import { ANON_IDENTITY } from "@liftedinit/many-js";
-// import { useDataServiceStore } from "features/services";
+import { useGetValues, useQueryValues } from "../queries";
+import { useDataServiceStore } from "features/services";
+import {
+  KVStoreQuery,
+  KVStoreValue,
+} from "@liftedinit/many-js/dist/network/modules/kvStore/types";
+import { UseQueryResult } from "react-query";
 
 interface KVData {
   key: string;
   value: string;
-  tag: string;
+  modifiable: boolean;
 }
 
-// eslint-disable-next-line
-function KVDataRow({ key, value, tag }: KVData) {
-  return (
-    <Tr key={key}>
-      <Td>{key}</Td>
-      <Td>{value}</Td>
-      <Td>{tag}</Td>
-    </Tr>
-  );
+function mapAndFilter<T>(query: UseQueryResult[]) {
+  return query.filter((q) => q.data).map((q) => q.data as T & { key: string });
+}
+
+function combineData(
+  getValues: UseQueryResult[],
+  queryValues: UseQueryResult[],
+  account?: Account
+): KVData[] {
+  const getData = mapAndFilter<KVStoreValue>(getValues);
+  const queryData = mapAndFilter<KVStoreQuery>(queryValues);
+
+  if (!getData.length || !queryData.length) {
+    return [];
+  }
+
+  const combined = getData.map((getItem) => {
+    const queryItem = queryData.find(
+      (queryItem) => getItem.key === queryItem.key
+    );
+    return {
+      key: getItem.key,
+      value: getItem.value ? getItem.value.toString() : "",
+      modifiable: account?.address === queryItem?.owner.toString(),
+    };
+  });
+  return combined;
 }
 
 export function DataSettings() {
+  const [key, setKey] = useState("");
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
-  // @TODO: Fetch all the keys
-  // const keys = useDataServiceStore((s) => s.keys);
+  const keys = useDataServiceStore((s) => s.keys);
+  const getValues = useGetValues(keys);
+  const queryValues = useQueryValues(keys);
+
+  const isLoading = [...getValues, ...queryValues].some((q) => q.isLoading);
+  const isError = [...getValues, ...queryValues].some((q) => q.isError);
+  const data = combineData(getValues, queryValues, account);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  if (isLoading) {
+    return <Progress isIndeterminate />;
+  }
+  if (isError) {
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        An error has occurred.
+      </Alert>
+    );
+  }
 
   return (
     <>
@@ -54,17 +103,49 @@ export function DataSettings() {
               <Th>Edit</Th>
             </Tr>
           </Thead>
-          <Tbody></Tbody>
+          <Tbody>
+            {data.map((item) => (
+              <Tr key={item.key}>
+                <Td>{item.key}</Td>
+                <Td>{item.value}</Td>
+                <Td>
+                  {item.modifiable ? (
+                    <Tag colorScheme="green">Modifiable</Tag>
+                  ) : (
+                    <Tag colorScheme="red">Not Modifiable</Tag>
+                  )}
+                </Td>
+                <Td>
+                  {item.modifiable && (
+                    <EditIcon
+                      onClick={() => {
+                        setKey(item.key);
+                        onOpen();
+                      }}
+                    />
+                  )}
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
         </Table>
         {account?.address !== ANON_IDENTITY && (
           <Flex mt={9} justifyContent="flex-end" w="full">
-            <Button width={{ base: "full", md: "auto" }} onClick={onOpen}>
+            <Button
+              width={{ base: "full", md: "auto" }}
+              onClick={() => {
+                setKey("");
+                onOpen();
+              }}
+            >
               Create New Key
             </Button>
           </Flex>
         )}
       </Box>
-      {isOpen && <PutValueModal isOpen={isOpen} onClose={onClose} />}
+      {isOpen && (
+        <PutValueModal itemKey={key} isOpen={isOpen} onClose={onClose} />
+      )}
     </>
   );
 }
