@@ -65,6 +65,7 @@ function combineData(
 
 export function DataSettings() {
   const [key, setKey] = useState("");
+  const [value, setValue] = useState("");
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
   const keys = useDataServiceStore((s) => s.keys);
   const getValues = useGetValues(keys);
@@ -120,6 +121,7 @@ export function DataSettings() {
                     <EditIcon
                       onClick={() => {
                         setKey(item.key);
+                        setValue(item.value);
                         onOpen();
                       }}
                     />
@@ -135,6 +137,7 @@ export function DataSettings() {
               width={{ base: "full", md: "auto" }}
               onClick={() => {
                 setKey("");
+                setValue("");
                 onOpen();
               }}
             >
@@ -144,7 +147,12 @@ export function DataSettings() {
         )}
       </Box>
       {isOpen && (
-        <PutValueModal itemKey={key} isOpen={isOpen} onClose={onClose} />
+        <PutValueModal
+          itemKey={key}
+          itemValue={value}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
       )}
     </>
   );

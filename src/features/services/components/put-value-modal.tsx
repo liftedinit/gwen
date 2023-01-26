@@ -24,10 +24,12 @@ export function PutValueModal({
   isOpen,
   onClose,
   itemKey,
+  itemValue,
 }: {
   isOpen: boolean;
   onClose: () => void;
   itemKey: string;
+  itemValue: string;
 }) {
   const { mutate: doPutValue, error, isError, isLoading } = usePutValue();
   const {
@@ -78,6 +80,7 @@ export function PutValueModal({
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => <Textarea {...field} />}
+                defaultValue={itemValue}
               />
             </FormControl>
           </GridItem>
