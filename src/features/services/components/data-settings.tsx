@@ -227,15 +227,15 @@ function MarkImmutableDialog({
     <>
       {children(onOpen)}
       <AlertDialog
-        header="Confirm"
+        header="Are you sure?"
         isOpen={isOpen}
         onClose={onClose}
         leastDestructiveRef={cancelRef}
       >
         <AlertDialog.Body>
           <Text>
-            Mark this key as immutable? You will lose access to modify or delete
-            it in the future. This action cannot be undone.
+            Making this key immutable means you will lose access to modify or
+            delete it in the future. This action cannot be undone.
           </Text>
         </AlertDialog.Body>
         <AlertDialog.Footer>
@@ -253,7 +253,7 @@ function MarkImmutableDialog({
               colorScheme="red"
               onClick={onMark}
             >
-              Remove
+              Make Immutable
             </Button>
           </ButtonGroup>
           {isError && (
@@ -297,14 +297,15 @@ function DeleteKeyDialog({
     <>
       {children(onOpen)}
       <AlertDialog
-        header="Confirm"
+        header="Are you sure?"
         isOpen={isOpen}
         onClose={onClose}
         leastDestructiveRef={cancelRef}
       >
         <AlertDialog.Body>
           <Text>
-            Delete this key and its value? This action cannot be undone.
+            Deleting this key means it will be permanently disabled along with
+            its value. This action cannot be undone.
           </Text>
         </AlertDialog.Body>
         <AlertDialog.Footer>
@@ -322,7 +323,7 @@ function DeleteKeyDialog({
               colorScheme="red"
               onClick={onDelete}
             >
-              Remove
+              Delete Key
             </Button>
           </ButtonGroup>
           {isError && (
