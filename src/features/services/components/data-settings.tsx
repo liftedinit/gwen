@@ -1,26 +1,38 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
+  Alert,
+  AlertDialog,
+  AlertIcon,
   Box,
   Button,
+  ButtonGroup,
+  DeleteIcon,
+  EditIcon,
   Flex,
   Heading,
+  IconButton,
+  LockIcon,
+  Progress,
   Table,
+  Tag,
   Tbody,
+  Td,
+  Text,
+  Th,
   Thead,
   Tr,
-  Td,
-  Th,
   useDisclosure,
-  Progress,
-  Alert,
-  AlertIcon,
-  Tag,
-  EditIcon,
+  useToast,
 } from "@liftedinit/ui";
 import { PutValueModal } from "../components";
 import { Account, useAccountsStore } from "features/accounts";
 import { ANON_IDENTITY } from "@liftedinit/many-js";
-import { useGetValues, useQueryValues } from "../queries";
+import {
+  useGetValues,
+  useQueryValues,
+  useTransferKey,
+  useDisableKey,
+} from "../queries";
 import { useDataServiceStore } from "features/services";
 import {
   KVStoreQuery,
@@ -101,7 +113,7 @@ export function DataSettings() {
               <Th>Key</Th>
               <Th>Value</Th>
               <Th>Tag</Th>
-              <Th>Edit</Th>
+              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -118,13 +130,41 @@ export function DataSettings() {
                 </Td>
                 <Td>
                   {item.modifiable && (
-                    <EditIcon
-                      onClick={() => {
-                        setKey(item.key);
-                        setValue(item.value);
-                        onOpen();
-                      }}
-                    />
+                    <ButtonGroup spacing={3}>
+                      <IconButton
+                        icon={<EditIcon />}
+                        aria-label="update key"
+                        onClick={() => {
+                          setKey(item.key);
+                          setValue(item.value);
+                          onOpen();
+                        }}
+                      />
+                      <MarkImmutableDialog itemKey={item.key}>
+                        {(onOpen) => (
+                          <IconButton
+                            aria-label="mark immutable"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onOpen();
+                            }}
+                            icon={<LockIcon />}
+                          />
+                        )}
+                      </MarkImmutableDialog>
+                      <DeleteKeyDialog itemKey={item.key}>
+                        {(onOpen) => (
+                          <IconButton
+                            aria-label="delete key"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onOpen();
+                            }}
+                            icon={<DeleteIcon />}
+                          />
+                        )}
+                      </DeleteKeyDialog>
+                    </ButtonGroup>
                   )}
                 </Td>
               </Tr>
@@ -154,6 +194,145 @@ export function DataSettings() {
           onClose={onClose}
         />
       )}
+    </>
+  );
+}
+function MarkImmutableDialog({
+  itemKey,
+  children,
+}: {
+  itemKey: string;
+  children: (onOpen: () => void) => void;
+}) {
+  const toast = useToast();
+  const { mutate: doTransferKey, error, isError } = useTransferKey();
+  const cancelRef = useRef(null);
+  const { onOpen, isOpen, onClose } = useDisclosure();
+
+  function onMark(e: React.FormEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    doTransferKey(itemKey, {
+      onSuccess: () => {
+        onClose();
+        toast({
+          status: "success",
+          title: "Locked",
+          description: "Key was marked as immutable",
+        });
+      },
+    });
+  }
+
+  return (
+    <>
+      {children(onOpen)}
+      <AlertDialog
+        header="Confirm"
+        isOpen={isOpen}
+        onClose={onClose}
+        leastDestructiveRef={cancelRef}
+      >
+        <AlertDialog.Body>
+          <Text>
+            Mark this key as immutable? You will lose access to modify or delete
+            it in the future. This action cannot be undone.
+          </Text>
+        </AlertDialog.Body>
+        <AlertDialog.Footer>
+          <ButtonGroup w="full" justifyContent="flex-end">
+            <Button
+              width={{ base: "full", md: "auto" }}
+              onClick={onClose}
+              ref={cancelRef}
+              type="submit"
+            >
+              Cancel
+            </Button>
+            <Button
+              width={{ base: "full", md: "auto" }}
+              colorScheme="red"
+              onClick={onMark}
+            >
+              Remove
+            </Button>
+          </ButtonGroup>
+          {isError && (
+            <Alert status="error">
+              <AlertIcon />
+              {(error as Error).message}
+            </Alert>
+          )}
+        </AlertDialog.Footer>
+      </AlertDialog>
+    </>
+  );
+}
+function DeleteKeyDialog({
+  itemKey,
+  children,
+}: {
+  itemKey: string;
+  children: (onOpen: () => void) => void;
+}) {
+  const toast = useToast();
+  const { mutate: doDisableKey, error, isError } = useDisableKey();
+  const cancelRef = useRef(null);
+  const { onOpen, isOpen, onClose } = useDisclosure();
+
+  function onDelete(e: React.FormEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    doDisableKey(itemKey, {
+      onSuccess: () => {
+        onClose();
+        toast({
+          status: "success",
+          title: "Deleted",
+          description: "Key was deleted",
+        });
+      },
+    });
+  }
+
+  return (
+    <>
+      {children(onOpen)}
+      <AlertDialog
+        header="Confirm"
+        isOpen={isOpen}
+        onClose={onClose}
+        leastDestructiveRef={cancelRef}
+      >
+        <AlertDialog.Body>
+          <Text>
+            Delete this key and its value? This action cannot be undone.
+          </Text>
+        </AlertDialog.Body>
+        <AlertDialog.Footer>
+          <ButtonGroup w="full" justifyContent="flex-end">
+            <Button
+              width={{ base: "full", md: "auto" }}
+              onClick={onClose}
+              ref={cancelRef}
+              type="submit"
+            >
+              Cancel
+            </Button>
+            <Button
+              width={{ base: "full", md: "auto" }}
+              colorScheme="red"
+              onClick={onDelete}
+            >
+              Remove
+            </Button>
+          </ButtonGroup>
+          {isError && (
+            <Alert status="error">
+              <AlertIcon />
+              {(error as Error).message}
+            </Alert>
+          )}
+        </AlertDialog.Footer>
+      </AlertDialog>
     </>
   );
 }
