@@ -33,7 +33,7 @@ import {
   useTransferKey,
   useDisableKey,
 } from "../queries";
-import { useDataServiceStore } from "features/services";
+import { useDataServiceStore } from "../store";
 import {
   KVStoreQuery,
   KVStoreValue,
