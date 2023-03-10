@@ -69,7 +69,7 @@ export function NetworkMenu() {
             activeNetwork ? <Circle bg="green.400" size="10px" /> : null
           }
         >
-          <Text casing="uppercase" isTruncated fontWeight="semibold">
+          <Text casing="uppercase" isTruncated fontWeight="medium">
             {`${activeNetwork?.name ?? "no network selected"}`}
           </Text>
         </MenuButton>

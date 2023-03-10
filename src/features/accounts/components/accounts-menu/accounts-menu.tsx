@@ -90,7 +90,7 @@ export function AccountsMenu() {
         >
           <Text
             casing="uppercase"
-            fontWeight="semibold"
+            fontWeight="medium"
             isTruncated
             lineHeight="normal"
           >

@@ -51,7 +51,7 @@ export function UserSelect() {
           variant="outline"
           colorScheme="brand.black"
         >
-          <Text casing="uppercase" fontWeight="semibold" lineHeight="normal">
+          <Text casing="uppercase" fontWeight="medium" lineHeight="normal">
             {activeUser?.name}
           </Text>
         </MenuButton>
