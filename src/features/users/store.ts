@@ -6,7 +6,7 @@ import {
   AnonymousIdentity,
   Ed25519KeyPairIdentity,
 } from "@liftedinit/many-js";
-import { replacer, reviver } from "@liftedinit/ui";
+import { replacer, reviver } from "shared";
 import { User, UserId, UsersState } from "./types";
 
 interface UserMethods {
