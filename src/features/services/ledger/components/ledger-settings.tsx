@@ -14,9 +14,18 @@ import {
   Progress,
   useDisclosure,
   AddressText,
+  IconButton,
+  ButtonGroup,
+  MinusCircleIcon,
+  PlusCircleIcon,
+  EditIcon,
 } from "@liftedinit/ui";
 import { useTokenList, useTokenInfo, TokenInfo } from "../queries";
-import { CreateTokenModal } from "../components";
+import {
+  BurnTokenModal,
+  CreateTokenModal,
+  MintTokenModal,
+} from "../components";
 import { useAccountsStore } from "features/accounts";
 import { ANON_IDENTITY } from "@liftedinit/many-js";
 
@@ -24,18 +33,6 @@ interface Token {
   name: string;
   symbol: string;
   address: string;
-}
-
-function TokenRow({ name, symbol, address }: Token) {
-  return (
-    <Tr key={symbol}>
-      <Td>{symbol}</Td>
-      <Td>{name}</Td>
-      <Td>
-        <AddressText isFullText addressText={address} />
-      </Td>
-    </Tr>
-  );
 }
 
 function toToken(token: TokenInfo): Token {
@@ -56,7 +53,21 @@ export function LedgerSettings() {
   const data = tokenInfo
     .filter((q) => q.data)
     .map(({ data }) => toToken(data as TokenInfo));
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isMintOpen,
+    onOpen: onMintOpen,
+    onClose: onMintClose,
+  } = useDisclosure();
+  const {
+    isOpen: isBurnOpen,
+    onOpen: onBurnOpen,
+    onClose: onBurnClose,
+  } = useDisclosure();
+  const {
+    isOpen: isCreateOpen,
+    onOpen: onCreateOpen,
+    onClose: onCreateClose,
+  } = useDisclosure();
 
   if (isLoading) {
     return <Progress isIndeterminate />;
@@ -83,17 +94,48 @@ export function LedgerSettings() {
               <Th>Address</Th>
             </Tr>
           </Thead>
-          <Tbody>{data.map(TokenRow)}</Tbody>
+          <Tbody>
+            {data.map((token) => (
+              <Tr key={token.symbol}>
+                <Td>{token.symbol}</Td>
+                <Td>{token.name}</Td>
+                <Td>
+                  <AddressText isFullText addressText={token.address} />
+                </Td>
+                <Td>
+                  <ButtonGroup spacing={3}>
+                    <IconButton
+                      disabled
+                      icon={<EditIcon />}
+                      aria-label="update token"
+                    />
+                    <IconButton
+                      icon={<PlusCircleIcon />}
+                      aria-label="mint token"
+                      onClick={onMintOpen}
+                    />
+                    <IconButton
+                      icon={<MinusCircleIcon />}
+                      aria-label="burn token"
+                      onClick={onBurnOpen}
+                    />
+                  </ButtonGroup>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
         </Table>
         {account?.address !== ANON_IDENTITY && (
           <Flex mt={9} justifyContent="flex-end" w="full">
-            <Button width={{ base: "full", md: "auto" }} onClick={onOpen}>
+            <Button width={{ base: "full", md: "auto" }} onClick={onCreateOpen}>
               Create Token
             </Button>
           </Flex>
         )}
       </Box>
-      {isOpen && <CreateTokenModal isOpen={isOpen} onClose={onClose} />}
+      <MintTokenModal isOpen={isMintOpen} onClose={onMintClose} />
+      <BurnTokenModal isOpen={isBurnOpen} onClose={onBurnClose} />
+      <CreateTokenModal isOpen={isCreateOpen} onClose={onCreateClose} />
     </>
   );
 }
