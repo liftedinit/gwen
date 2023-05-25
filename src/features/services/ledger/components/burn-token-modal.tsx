@@ -10,41 +10,36 @@ import {
   Input,
   useToast,
 } from "@liftedinit/ui";
-import { useAccountsStore } from "features/accounts";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useCreateToken } from "../queries";
+import { useBurnToken } from "../queries";
+import { Token } from "./ledger-settings";
 
 export interface BurnTokenInputs {
-  name: string;
-  symbol: string;
+  token: Token;
   amount: string;
   address: string;
 }
 
 export function BurnTokenModal({
+  token,
   isOpen,
   onClose,
 }: {
+  token: Token;
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const { mutate: doBurnToken, error, isError, isLoading } = useCreateToken();
+  const { mutate: doBurnToken, error, isError, isLoading } = useBurnToken();
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm<BurnTokenInputs>();
-  const account = useAccountsStore((s) => s.byId.get(s.activeId));
-  const address = account?.address ?? "";
   const toast = useToast();
 
-  const onSubmit: SubmitHandler<BurnTokenInputs> = ({
-    name,
-    symbol,
-    amount,
-  }) => {
+  const onSubmit: SubmitHandler<BurnTokenInputs> = ({ address, amount }) => {
     doBurnToken(
-      { name, symbol, amount, address },
+      { token, amount, address },
       {
         onSuccess: () => {
           onClose();

@@ -6,7 +6,12 @@ import {
   useQueryClient,
   UseQueryResult,
 } from "react-query";
-import { CreateTokenInputs } from "features/services/ledger";
+import {
+  BurnTokenInputs,
+  CreateTokenInputs,
+  MintTokenInputs,
+} from "features/services/ledger";
+import { Address } from "@liftedinit/many-js";
 
 interface LedgerInfoResponse {
   symbols: Map<string, string>;
@@ -20,7 +25,7 @@ export interface TokenInfo {
       symbol: string;
       precision: number;
     };
-    owner: string;
+    owner: Address;
   };
 }
 
@@ -45,11 +50,61 @@ export function useTokenInfo(
   return useQueries<TokenInfo[]>({
     queries: tokenList.data
       ? [...tokenList.data.symbols.entries()].map(([address]) => ({
-          queryKey: ["tokens", address],
-          queryFn: async () => await network?.tokens.info({ address }),
-          enabled: !!network?.url,
-        }))
+        queryKey: ["tokens", address],
+        queryFn: async () => await network?.tokens.info({ address }),
+        enabled: !!network?.url,
+      }))
       : [],
+  });
+}
+
+export function useMintToken() {
+  // eslint-disable-next-line
+  const [_, network] = useNetworkContext();
+  const queryClient = useQueryClient();
+
+  return useMutation<unknown, Error, MintTokenInputs>({
+    mutationFn: async (inputs: MintTokenInputs) => {
+      const precision = inputs.token.precision;
+      const amount = BigInt(parseInt(inputs.amount) * 10 ** precision);
+
+      const param = {
+        symbol: inputs.token.address,
+        addresses: {
+          [inputs.address]: amount,
+        },
+      };
+      return await network?.tokens.mint(param);
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["tokens"],
+      }),
+  });
+}
+
+export function useBurnToken() {
+  // eslint-disable-next-line
+  const [_, network] = useNetworkContext();
+  const queryClient = useQueryClient();
+
+  return useMutation<unknown, Error, BurnTokenInputs>({
+    mutationFn: async (inputs: BurnTokenInputs) => {
+      const precision = inputs.token.precision;
+      const amount = BigInt(parseInt(inputs.amount) * 10 ** precision);
+
+      const param = {
+        symbol: inputs.token.address,
+        addresses: {
+          [inputs.address]: amount,
+        },
+      };
+      return await network?.tokens.burn(param);
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["tokens"],
+      }),
   });
 }
 

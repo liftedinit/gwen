@@ -28,11 +28,14 @@ import {
 } from "../components";
 import { useAccountsStore } from "features/accounts";
 import { ANON_IDENTITY } from "@liftedinit/many-js";
+import { useState } from "react";
 
-interface Token {
+export interface Token {
   name: string;
   symbol: string;
   address: string;
+  precision: number;
+  owner: string;
 }
 
 function toToken(token: TokenInfo): Token {
@@ -40,10 +43,13 @@ function toToken(token: TokenInfo): Token {
     name: token.info.summary.name,
     address: token.info.address.toString(),
     symbol: token.info.summary.symbol,
+    precision: token.info.summary.precision,
+    owner: token.info.owner?.toString(),
   };
 }
 
 export function LedgerSettings() {
+  const [selectedToken, setSelectedToken] = useState<Token>();
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
   const tokenList = useTokenList();
   const tokenInfo = useTokenInfo(tokenList);
@@ -110,14 +116,22 @@ export function LedgerSettings() {
                       aria-label="update token"
                     />
                     <IconButton
+                      disabled={token.owner !== account?.address}
                       icon={<PlusCircleIcon />}
                       aria-label="mint token"
-                      onClick={onMintOpen}
+                      onClick={() => {
+                        setSelectedToken(token);
+                        onMintOpen();
+                      }}
                     />
                     <IconButton
+                      disabled={token.owner !== account?.address}
                       icon={<MinusCircleIcon />}
                       aria-label="burn token"
-                      onClick={onBurnOpen}
+                      onClick={() => {
+                        setSelectedToken(token);
+                        onBurnOpen();
+                      }}
                     />
                   </ButtonGroup>
                 </Td>
@@ -125,16 +139,30 @@ export function LedgerSettings() {
             ))}
           </Tbody>
         </Table>
-        {account?.address !== ANON_IDENTITY && (
-          <Flex mt={9} justifyContent="flex-end" w="full">
-            <Button width={{ base: "full", md: "auto" }} onClick={onCreateOpen}>
-              Create Token
-            </Button>
-          </Flex>
-        )}
+        <Flex mt={9} justifyContent="flex-end" w="full">
+          <Button
+            disabled={account?.address === ANON_IDENTITY}
+            width={{ base: "full", md: "auto" }}
+            onClick={onCreateOpen}
+          >
+            Create Token
+          </Button>
+        </Flex>
       </Box>
-      <MintTokenModal isOpen={isMintOpen} onClose={onMintClose} />
-      <BurnTokenModal isOpen={isBurnOpen} onClose={onBurnClose} />
+      {selectedToken && (
+        <>
+          <MintTokenModal
+            isOpen={isMintOpen}
+            onClose={onMintClose}
+            token={selectedToken}
+          />
+          <BurnTokenModal
+            isOpen={isBurnOpen}
+            onClose={onBurnClose}
+            token={selectedToken}
+          />
+        </>
+      )}
       <CreateTokenModal isOpen={isCreateOpen} onClose={onCreateClose} />
     </>
   );

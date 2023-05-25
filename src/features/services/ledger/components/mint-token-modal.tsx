@@ -10,41 +10,36 @@ import {
   Input,
   useToast,
 } from "@liftedinit/ui";
-import { useAccountsStore } from "features/accounts";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useCreateToken } from "../queries";
+import { useMintToken } from "../queries";
+import { Token } from "./ledger-settings";
 
 export interface MintTokenInputs {
-  name: string;
-  symbol: string;
+  token: Token;
   amount: string;
   address: string;
 }
 
 export function MintTokenModal({
+  token,
   isOpen,
   onClose,
 }: {
+  token: Token;
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const { mutate: doMintToken, error, isError, isLoading } = useCreateToken();
+  const { mutate: doMintToken, error, isError } = useMintToken();
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm<MintTokenInputs>();
-  const account = useAccountsStore((s) => s.byId.get(s.activeId));
-  const address = account?.address ?? "";
   const toast = useToast();
 
-  const onSubmit: SubmitHandler<MintTokenInputs> = ({
-    name,
-    symbol,
-    amount,
-  }) => {
+  const onSubmit: SubmitHandler<MintTokenInputs> = ({ address, amount }) => {
     doMintToken(
-      { name, symbol, amount, address },
+      { token, amount, address },
       {
         onSuccess: () => {
           onClose();
@@ -99,7 +94,6 @@ export function MintTokenModal({
       <Modal.Footer>
         <Flex justifyContent="flex-end" w="full">
           <Button
-            isLoading={isLoading}
             onClick={handleSubmit(onSubmit)}
             width={{ base: "full", md: "auto" }}
             colorScheme="brand.teal"
