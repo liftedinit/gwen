@@ -36,6 +36,7 @@ export interface Token {
   address: string;
   precision: number;
   owner: string;
+  supply: number;
 }
 
 function toToken(token: TokenInfo): Token {
@@ -45,6 +46,8 @@ function toToken(token: TokenInfo): Token {
     symbol: token.info.summary.symbol,
     precision: token.info.summary.precision,
     owner: token.info.owner?.toString(),
+    supply:
+      Number(token.info.supply.total) / 10 ** token.info.summary.precision,
   };
 }
 
@@ -98,6 +101,8 @@ export function LedgerSettings() {
               <Th>Symbol</Th>
               <Th>Name</Th>
               <Th>Address</Th>
+              <Th>Supply</Th>
+              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -108,6 +113,7 @@ export function LedgerSettings() {
                 <Td>
                   <AddressText isFullText addressText={token.address} />
                 </Td>
+                <Td isNumeric>{token.supply.toLocaleString()}</Td>
                 <Td>
                   <ButtonGroup spacing={3}>
                     <IconButton

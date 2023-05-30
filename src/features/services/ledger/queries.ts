@@ -25,6 +25,9 @@ export interface TokenInfo {
       symbol: string;
       precision: number;
     };
+    supply: {
+      total: BigInt;
+    };
     owner: Address;
   };
 }
