@@ -9,6 +9,8 @@ import {
   FormLabel,
   Input,
   useToast,
+  InputGroup,
+  InputRightAddon,
 } from "@liftedinit/ui";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useBurnToken } from "../queries";
@@ -54,7 +56,7 @@ export function BurnTokenModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
       <Modal.Header>Burn Token</Modal.Header>
       <Modal.Body>
         <FormControl isInvalid={!!errors.address}>
@@ -63,7 +65,9 @@ export function BurnTokenModal({
             name="address"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <Input placeholder="maa" {...field} />}
+            render={({ field }) => (
+              <Input fontFamily="mono" placeholder="maa" {...field} />
+            )}
           />
           {errors.address && (
             <FormErrorMessage>Must be a valid Many address.</FormErrorMessage>
@@ -83,13 +87,22 @@ export function BurnTokenModal({
               },
             }}
             render={({ field }) => (
-              <Input type="number" placeholder="100000000" {...field} />
+              <InputGroup>
+                <Input type="number" placeholder="100000000" {...field} />
+                <InputRightAddon>{token.symbol}</InputRightAddon>
+              </InputGroup>
             )}
           />
           {errors.amount && (
             <FormErrorMessage>Must be a positive number.</FormErrorMessage>
           )}
         </FormControl>
+        {isError && (
+          <Alert mt={6} status="error">
+            <AlertIcon />
+            {error.message}
+          </Alert>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Flex justifyContent="flex-end" w="full">
@@ -102,12 +115,6 @@ export function BurnTokenModal({
             Burn
           </Button>
         </Flex>
-        {isError && (
-          <Alert status="error">
-            <AlertIcon />
-            {error.message}
-          </Alert>
-        )}
       </Modal.Footer>
     </Modal>
   );

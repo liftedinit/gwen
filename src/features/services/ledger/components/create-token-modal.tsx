@@ -68,7 +68,7 @@ export function CreateTokenModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
       <Modal.Header>Create Token</Modal.Header>
       <Modal.Body>
         <Grid templateColumns="repeat(5,1fr)" gap={9}>
@@ -81,7 +81,7 @@ export function CreateTokenModal({
                 rules={{
                   required: true,
                   maxLength: 20,
-                  pattern: /^[A-Za-z]+$/i,
+                  pattern: /^[A-Za-z ]+$/i,
                 }}
                 render={({ field }) => (
                   <Input placeholder="MyToken" {...field} />
@@ -115,7 +115,7 @@ export function CreateTokenModal({
               )}
             </FormControl>
           </GridItem>
-          <GridItem colSpan={2}>
+          <GridItem colSpan={5}>
             <FormControl isInvalid={!!errors.amount}>
               <FormLabel htmlFor="amount">Amount</FormLabel>
               <Controller
@@ -137,7 +137,7 @@ export function CreateTokenModal({
               )}
             </FormControl>
           </GridItem>
-          <GridItem colSpan={3}>
+          <GridItem colSpan={5}>
             <FormControl>
               <HStack>
                 <FormLabel htmlFor="address">Destination Address</FormLabel>
@@ -153,7 +153,7 @@ export function CreateTokenModal({
                   </PopoverContent>
                 </Popover>
               </HStack>
-              <Input isDisabled value={address} />
+              <Input fontFamily="mono" isDisabled value={address} />
             </FormControl>
           </GridItem>
         </Grid>
