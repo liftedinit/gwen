@@ -73,6 +73,7 @@ export function EditAccountModal({
 
   return (
     <Modal
+      size="xl"
       isOpen={isOpen}
       onClose={onClose}
       header="Update Account"
