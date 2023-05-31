@@ -81,14 +81,16 @@ export function CreateTokenModal({
                 rules={{
                   required: true,
                   maxLength: 20,
-                  pattern: /^[A-Za-z ]+$/i,
+                  pattern: /^[\w ]+$/i,
                 }}
                 render={({ field }) => (
                   <Input placeholder="MyToken" {...field} />
                 )}
               />
               {errors.name && (
-                <FormErrorMessage>Must contain only letters.</FormErrorMessage>
+                <FormErrorMessage>
+                  Must contain only letters, numbers, and spaces.
+                </FormErrorMessage>
               )}
             </FormControl>
           </GridItem>
