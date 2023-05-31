@@ -12,7 +12,6 @@
     "@web3auth/openlogin-adapter": "^2.1.3",
     "@web3auth/web3auth": "^2.1.3",
     "apexcharts": "^3.36.0",
-    "flume": "0.8.0",
     "framer-motion": "^6.5.1",
     "jose": "^4.10.3",
     "localforage": "^1.10.0",
@@ -40,7 +39,8 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "eslint-config-react-app": "^7.0.0",
-    "http-proxy-middleware": "^2.0.6"
+    "http-proxy-middleware": "^2.0.6",
+    "prettier-plugin-organize-imports": "^3.2.2"
   },
   "scripts": {
     "start": "react-app-rewired start",
