@@ -1,7 +1,7 @@
-import { Neighborhoods } from "pages";
+import { Layout, Neighborhoods } from "pages";
 import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
-import { Layout, Services, ServiceSettings, Splash, Users } from "views";
+import { Services, ServiceSettings, Splash, Users } from "views";
 
 const ONE_SECOND = 1 * 1000;
 

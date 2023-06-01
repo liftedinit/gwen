@@ -1,8 +1,8 @@
-import React from "react";
 import { Flex, Grid, GridItem, Nav } from "@liftedinit/ui";
-import { RiHome2Line, RiServerLine, RiUserLine } from "react-icons/ri";
 import { AccountsMenu } from "features/accounts";
-import { NetworkMenu } from "features/network";
+import React from "react";
+import { RiHome2Line, RiServerLine, RiUserLine } from "react-icons/ri";
+import { NeighborhoodMenu } from "./neighborhood-menu";
 
 const navItems = [
   { label: "Neighborhoods", path: "", icon: RiHome2Line },
@@ -24,7 +24,7 @@ export function Layout({ children }: React.PropsWithChildren<{}>) {
           overflow="hidden"
         >
           <AccountsMenu />
-          <NetworkMenu />
+          <NeighborhoodMenu />
         </Flex>
         {children}
       </GridItem>

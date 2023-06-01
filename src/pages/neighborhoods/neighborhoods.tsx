@@ -7,39 +7,30 @@ import {
   Wrap,
   WrapItem,
 } from "@liftedinit/ui";
+import { useNeighborhoodStore } from "api/neighborhoods";
 import { Neighborhood } from "./neighborhood";
 
-const NEIGHBORHOODS = [
-  {
-    name: "Manifest Ledger",
-    description: "Mainnet governance ledger and home of MFX",
-    services: ["blocks", "ledger"],
-  },
-  {
-    name: "Alpha Ledger",
-    description: "Devnet ledger for the Alpha Cohort",
-    services: ["blocks", "ledger"],
-  },
-  {
-    name: "Demo Ledger",
-    description: "Devnet ledger for demonstrations",
-    services: ["blocks", "ledger"],
-  },
-  {
-    name: "Demo KVStore",
-    description: "Devnet kvstore, world readable",
-    services: ["blocks", "data"],
-  },
-];
-
 export function Neighborhoods() {
+  const { activeId, setActiveId, neighborhoods } = useNeighborhoodStore();
   return (
     <Box p={6}>
       <Heading>Neighborhoods</Heading>
       <Wrap mt={6} spacing={6}>
-        {NEIGHBORHOODS.map(Neighborhood)}
+        {neighborhoods.map((neighborhood, id) => (
+          <Neighborhood
+            key={neighborhood.url}
+            {...neighborhood}
+            isActive={activeId === id}
+            setActiveId={() => setActiveId(id)}
+          />
+        ))}
         <WrapItem>
-          <Square size="15rem" border="3px solid white" borderRadius={12}>
+          <Square
+            size="15rem"
+            borderWidth="2px"
+            borderColor="gray.200"
+            borderRadius={12}
+          >
             <Circle size={12} bg="gray.200">
               <PlusIcon color="white" />
             </Circle>
