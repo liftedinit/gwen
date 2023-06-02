@@ -1,42 +1,43 @@
-import { useQuery } from "react-query"
-import { useNetworkContext } from "features/network"
 import {
   AccountFeatureTypes,
   AccountRole,
   GetAccountInfoResponse,
-} from "@liftedinit/many-js"
-import { useAccountsStore } from "../stores"
+} from "@liftedinit/many-js";
+import { NeighborhoodContext } from "api/neighborhoods";
+import { useContext } from "react";
+import { useQuery } from "react-query";
+import { useAccountsStore } from "../stores";
 
 export function useGetAccountInfo(accountAddress?: string) {
-  const [n] = useNetworkContext()
-  const activeIdentity = useAccountsStore(s => s.byId.get(s.activeId))
-  const address = activeIdentity?.address
+  const n = useContext(NeighborhoodContext);
+  const activeIdentity = useAccountsStore((s) => s.byId.get(s.activeId));
+  const address = activeIdentity?.address;
 
   return useQuery<
     GetAccountInfoResponse & {
-      isOwner: boolean
-      hasMultisigFeature: boolean
-      hasLedgerFeature: boolean
+      isOwner: boolean;
+      hasMultisigFeature: boolean;
+      hasLedgerFeature: boolean;
     },
     Error
   >({
     queryKey: ["accountinfo", accountAddress],
     queryFn: async () => {
-      const res = await n?.account.info(accountAddress)
+      const res = await n?.account.info(accountAddress);
       const isOwner = Boolean(
         res?.accountInfo?.roles
           ?.get?.(address)
-          ?.includes(AccountRole[AccountRole.owner]),
-      )
-      const features = res?.accountInfo?.features
+          ?.includes(AccountRole[AccountRole.owner])
+      );
+      const features = res?.accountInfo?.features;
       const hasLedgerFeature = Boolean(
-        features?.get(AccountFeatureTypes[AccountFeatureTypes.accountLedger]),
-      )
+        features?.get(AccountFeatureTypes[AccountFeatureTypes.accountLedger])
+      );
       const hasMultisigFeature = Boolean(
-        features?.get(AccountFeatureTypes[AccountFeatureTypes.accountMultisig]),
-      )
-      return { ...res, isOwner, hasMultisigFeature, hasLedgerFeature }
+        features?.get(AccountFeatureTypes[AccountFeatureTypes.accountMultisig])
+      );
+      return { ...res, isOwner, hasMultisigFeature, hasLedgerFeature };
     },
     enabled: Boolean(accountAddress),
-  })
+  });
 }

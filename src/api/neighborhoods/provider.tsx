@@ -2,6 +2,7 @@ import {
   Account,
   AnonymousIdentity,
   Base,
+  Blockchain,
   Events,
   IdStore,
   KvStore,
@@ -26,7 +27,16 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
   const neighborhood = useMemo(() => {
     const identity = activeAccount?.identity ?? new AnonymousIdentity();
     const network = new Network(activeNeighborhood.url, identity);
-    network.apply([Account, Base, Events, IdStore, KvStore, Ledger, Tokens]);
+    network.apply([
+      Account,
+      Base,
+      Blockchain,
+      Events,
+      IdStore,
+      KvStore,
+      Ledger,
+      Tokens,
+    ]);
     return network;
   }, [activeAccount, activeNeighborhood]);
 

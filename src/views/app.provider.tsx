@@ -1,13 +1,13 @@
+import {
+  queryClient,
+  QueryClientProvider,
+  theme,
+  ThemeProvider,
+} from "@liftedinit/ui";
+import { NeighborhoodProvider } from "api/neighborhoods";
+import { Web3authProvider } from "features/accounts";
 import React from "react";
 import { HashRouter } from "react-router-dom";
-import {
-  QueryClientProvider,
-  ThemeProvider,
-  queryClient,
-  theme,
-} from "@liftedinit/ui";
-import { NetworkProvider } from "features/network";
-import { Web3authProvider } from "features/accounts";
 
 interface IAppProvider {
   children: React.ReactNode;
@@ -18,9 +18,9 @@ export function AppProvider({ children }: IAppProvider) {
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <Web3authProvider>
-          <NetworkProvider>
+          <NeighborhoodProvider>
             <HashRouter>{children}</HashRouter>
-          </NetworkProvider>
+          </NeighborhoodProvider>
         </Web3authProvider>
       </QueryClientProvider>
     </ThemeProvider>

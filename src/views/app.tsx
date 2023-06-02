@@ -1,7 +1,7 @@
-import { Layout, Neighborhoods } from "pages";
+import { Blocks, Data, Layout, Ledger, Neighborhoods, Services } from "pages";
 import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
-import { Services, ServiceSettings, Splash, Users } from "views";
+import { Splash, Users } from "views";
 
 const ONE_SECOND = 1 * 1000;
 
@@ -29,7 +29,9 @@ export function App() {
         <Route index element={<Neighborhoods />} />
         <Route path="settings">
           <Route index element={<Services />} />
-          <Route path=":service" element={<ServiceSettings />} />
+          <Route path="blocks" element={<Blocks />} />
+          <Route path="ledger" element={<Ledger />} />
+          <Route path="data" element={<Data />} />
         </Route>
         <Route path="users" element={<Users />} />
       </Route>

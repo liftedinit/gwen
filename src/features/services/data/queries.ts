@@ -1,14 +1,14 @@
-import { useNetworkContext } from "features/network";
-import { useMutation, useQueries, useQueryClient } from "react-query";
-import { useDataServiceStore, PutValueInputs } from "features/services/data";
 import {
   KVStoreQuery,
   KVStoreValue,
 } from "@liftedinit/many-js/dist/network/modules/kvStore/types";
+import { NeighborhoodContext } from "api/neighborhoods";
+import { PutValueInputs, useDataServiceStore } from "features/services/data";
+import { useContext } from "react";
+import { useMutation, useQueries, useQueryClient } from "react-query";
 
 export function usePutValue() {
-  // eslint-disable-next-line
-  const [_, network] = useNetworkContext();
+  const network = useContext(NeighborhoodContext);
   const queryClient = useQueryClient();
   const addKey = useDataServiceStore((s) => s.addKey);
 
@@ -23,7 +23,7 @@ export function usePutValue() {
 }
 
 export function useGetValues(keys: string[]) {
-  const [network] = useNetworkContext();
+  const network = useContext(NeighborhoodContext);
 
   return useQueries({
     queries: keys.map((key) => ({
@@ -36,7 +36,7 @@ export function useGetValues(keys: string[]) {
 }
 
 export function useQueryValues(keys: string[]) {
-  const [network] = useNetworkContext();
+  const network = useContext(NeighborhoodContext);
 
   return useQueries({
     queries: keys.map((key) => ({
@@ -49,8 +49,7 @@ export function useQueryValues(keys: string[]) {
 }
 
 export function useTransferKey() {
-  // eslint-disable-next-line
-  const [_, network] = useNetworkContext();
+  const network = useContext(NeighborhoodContext);
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -63,8 +62,7 @@ export function useTransferKey() {
 }
 
 export function useDisableKey() {
-  // eslint-disable-next-line
-  const [_, network] = useNetworkContext();
+  const network = useContext(NeighborhoodContext);
   const queryClient = useQueryClient();
   const delKey = useDataServiceStore((s) => s.delKey);
 

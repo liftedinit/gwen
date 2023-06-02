@@ -1,63 +1,64 @@
-import { useMutation } from "react-query"
-import { useNetworkContext } from "features/network"
 import {
   AccountFeatureTypes,
   AccountMultisigArgument,
   CreateAccountResponse,
-} from "@liftedinit/many-js"
-import { accountLedgerFeature, accountMultisigFeature } from "../types"
+} from "@liftedinit/many-js";
+import { NeighborhoodContext } from "api/neighborhoods";
+import { useContext } from "react";
+import { useMutation } from "react-query";
+import { accountLedgerFeature, accountMultisigFeature } from "../types";
 
 export type CreateAccountFormData = {
   accountSettings: {
-    name: string
-    owners: { address: string; roles: string[] }[]
-  }
-  features: { [k: string]: boolean }
+    name: string;
+    owners: { address: string; roles: string[] }[];
+  };
+  features: { [k: string]: boolean };
   featureSettings: {
-    [k: string]: unknown
-  }
-}
+    [k: string]: unknown;
+  };
+};
 
 export function useCreateAccount() {
-  const [, n] = useNetworkContext()
+  const n = useContext(NeighborhoodContext);
   return useMutation<CreateAccountResponse, Error, CreateAccountFormData>(
     async (vars: CreateAccountFormData) => {
-      const name = vars.accountSettings.name
+      const name = vars.accountSettings.name;
       const roles = vars.accountSettings.owners.reduce(
         (
           acc: Map<string, string[]>,
-          owner: { address: string; roles: string[] },
+          owner: { address: string; roles: string[] }
         ) => {
-          acc.set(owner.address, owner.roles)
-          return acc
+          acc.set(owner.address, owner.roles);
+          return acc;
         },
-        new Map(),
-      )
-      const features = makeFeatures(vars.features, vars.featureSettings)
-      const res = await n?.account.create({ name, roles, features })
-      return res
-    },
-  )
+        new Map()
+      );
+      const features = makeFeatures(vars.features, vars.featureSettings);
+      const res = await n?.account.create({ name, roles, features });
+      return res;
+    }
+  );
 }
 
 function makeFeatures(
   features: CreateAccountFormData["features"],
-  featureSettings: CreateAccountFormData["featureSettings"],
+  featureSettings: CreateAccountFormData["featureSettings"]
 ) {
-  const result = []
+  const result = [];
   if (features[accountLedgerFeature]) {
-    result.push(AccountFeatureTypes.accountLedger)
+    result.push(AccountFeatureTypes.accountLedger);
   }
   const multisigSettings = features[accountMultisigFeature]
     ? featureSettings[accountMultisigFeature]
-    : null
+    : null;
   if (multisigSettings) {
     const { threshold, expireInSecs, executeAutomatically } =
       multisigSettings as {
-        threshold: number
-        expireInSecs: number
-        executeAutomatically: boolean
-      }
+        threshold: number;
+        expireInSecs: number;
+        executeAutomatically: boolean;
+      };
     const multisigArguments = [
       AccountFeatureTypes.accountMultisig,
       new Map()
@@ -65,10 +66,10 @@ function makeFeatures(
         .set(AccountMultisigArgument.expireInSecs, expireInSecs)
         .set(
           AccountMultisigArgument.executeAutomatically,
-          executeAutomatically,
+          executeAutomatically
         ),
-    ]
-    result.push(multisigArguments)
+    ];
+    result.push(multisigArguments);
   }
-  return result
+  return result;
 }
