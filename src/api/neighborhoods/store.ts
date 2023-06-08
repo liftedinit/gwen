@@ -41,6 +41,18 @@ const NEIGHBORHOODS = [
     description: "Devnet ledger for demonstrations",
     services: ["blocks", "ledger"],
   },
+  {
+    name: "Local Ledger",
+    url: "/api",
+    description: "The call is coming from INSIDE THE BUILDING",
+    services: ["blocks", "ledger"],
+  },
+  {
+    name: "Local KVStore",
+    url: "/kvapi",
+    description: "The call is coming from INSIDE THE BUILDING",
+    services: ["data"],
+  },
 ];
 
 export const useNeighborhoodStore = create<
