@@ -1,5 +1,11 @@
 import { Network } from "@liftedinit/many-js";
-import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "react-query";
 
 export function useListKeys(
   neighborhood: Network | undefined,
@@ -12,37 +18,16 @@ export function useListKeys(
   );
 }
 
-export function useCombinedData(
-  neighborhood: Network | undefined,
-  address?: string
-) {
-  const keys = useListKeys(neighborhood, address!);
-  const values = useGetValues(neighborhood, keys.data?.keys);
-  const queries = useQueryValues(neighborhood, keys.data?.keys);
-
-  const combined = [keys, ...values, ...queries];
-
-  const all = new Map<string, any>();
-
-  if (values.every((q) => q.isSuccess)) {
-    values
-      .map((q) => q.data)
-      .forEach((d) => all.set(d.key, { ...all.get(d.key), ...d }));
-  }
-
-  if (queries.every((q) => q.isSuccess)) {
-    queries
-      .map((q) => q.data)
-      .forEach((d) => all.set(d.key, { ...all.get(d.key), ...d }));
-  }
-
-  return {
-    data: Object.fromEntries(all),
-    isLoading: combined.some((q) => q.isLoading),
-    isSuccess: combined.every((q) => q.isSuccess),
-    isError: combined.some((q) => q.isError),
-    errors: combined.map((q) => q.error),
-  };
+export function combineData(combined: UseQueryResult<{ key: string }>[]) {
+  return Object.fromEntries(
+    combined
+      .map((query) => query.data)
+      .filter((item) => item)
+      .reduce(
+        (map, item) => map.set(item!.key, { ...map.get(item!.key), ...item }),
+        new Map<string, any>()
+      )
+  );
 }
 
 export function usePutValue(neighborhood: Network | undefined) {
@@ -78,7 +63,7 @@ export function useGetValues(
   keys: string[] = []
 ) {
   return useQueries({
-    queries: keys?.map((key) => getValue(neighborhood, key)),
+    queries: keys.map((key) => getValue(neighborhood, key)),
   });
 }
 
@@ -99,7 +84,7 @@ export function useQueryValues(
   keys: string[] = []
 ) {
   return useQueries({
-    queries: keys?.map((key) => queryValue(neighborhood, key)),
+    queries: keys.map((key) => queryValue(neighborhood, key)),
   });
 }
 

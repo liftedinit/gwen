@@ -1,7 +1,12 @@
 import { ANON_IDENTITY } from "@liftedinit/many-js";
 import { Box, Button, Flex, Heading, useDisclosure } from "@liftedinit/ui";
 import { NeighborhoodContext } from "api/neighborhoods";
-import { useCombinedData } from "api/services";
+import {
+  combineData,
+  useGetValues,
+  useListKeys,
+  useQueryValues,
+} from "api/services";
 import { useAccountsStore } from "features/accounts";
 import { useContext, useState } from "react";
 import { Breadcrumbs } from "../breadcrumbs";
@@ -14,7 +19,10 @@ export function Data() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [keyvalue, setKeyvalue] = useState({ key: "", value: "" });
 
-  const { data } = useCombinedData(neighborhood, account?.address.toString());
+  const { data: keys } = useListKeys(neighborhood, account?.address.toString());
+  const values = useGetValues(neighborhood, keys?.keys);
+  const queries = useQueryValues(neighborhood, keys?.keys);
+  const data = combineData([...values, ...queries]);
 
   return (
     <Box p={6}>
