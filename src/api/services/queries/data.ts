@@ -1,16 +1,22 @@
 import { Network } from "@liftedinit/many-js";
 import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 
-export function useListKeys(neighborhood: Network | undefined) {
+export function useListKeys(
+  neighborhood: Network | undefined,
+  address: string = ""
+) {
   return useQuery(
-    [neighborhood?.url, "kvStore.list"],
+    [neighborhood?.url, "kvStore", address, "keys"],
     async () => await neighborhood?.kvStore.list(),
     { enabled: !!neighborhood }
   );
 }
 
-export function useCombinedData(neighborhood: Network | undefined) {
-  const keys = useListKeys(neighborhood);
+export function useCombinedData(
+  neighborhood: Network | undefined,
+  address?: string
+) {
+  const keys = useListKeys(neighborhood, address!);
   const values = useGetValues(neighborhood, keys.data?.keys);
   const queries = useQueryValues(neighborhood, keys.data?.keys);
 
@@ -46,9 +52,9 @@ export function usePutValue(neighborhood: Network | undefined) {
     async ({ key, value }: { key: string; value: string }) =>
       await neighborhood?.kvStore.put({ key, value }),
     {
-      onSuccess: (_, key) => {
+      onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: [neighborhood?.url, "kvStore.get", key],
+          queryKey: [neighborhood?.url, "kvStore"],
         });
       },
     }
@@ -57,7 +63,7 @@ export function usePutValue(neighborhood: Network | undefined) {
 
 function getValue(neighborhood: Network | undefined, key: string) {
   return {
-    queryKey: [neighborhood?.url, "kvStore.get", key],
+    queryKey: [neighborhood?.url, "kvStore", key, "value"],
     queryFn: async () => await neighborhood?.kvStore.get({ key }),
     enabled: !!neighborhood,
   };
@@ -78,7 +84,7 @@ export function useGetValues(
 
 function queryValue(neighborhood: Network | undefined, key: string) {
   return {
-    queryKey: [neighborhood?.url, "kvStore.query", key],
+    queryKey: [neighborhood?.url, "kvStore", key, "query"],
     queryFn: async () => await neighborhood?.kvStore.query({ key }),
     enabled: !!neighborhood,
   };
@@ -105,11 +111,7 @@ export function useMarkImmutable(neighborhood: Network | undefined) {
       await neighborhood?.kvStore.transfer({ key, newOwner: "maiyg" }),
     {
       onSuccess: (_, key) => {
-        queryClient.invalidateQueries([
-          neighborhood?.url,
-          "kvStore.query",
-          key,
-        ]);
+        queryClient.invalidateQueries([neighborhood?.url, "kvStore", key]);
       },
     }
   );
@@ -122,11 +124,7 @@ export function useDisableKey(neighborhood: Network | undefined) {
     async (key: string) => await neighborhood?.kvStore.disable({ key }),
     {
       onSuccess: (_, key) => {
-        queryClient.invalidateQueries([
-          neighborhood?.url,
-          "kvStore.query",
-          key,
-        ]);
+        queryClient.invalidateQueries([neighborhood?.url, "kvStore", key]);
       },
     }
   );
