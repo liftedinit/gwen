@@ -47,6 +47,12 @@ const NEIGHBORHOODS = [
     description: "Devnet key-value store for demonstrations",
     services: ["blocks", "data"],
   },
+  {
+    name: "Demo Compute",
+    url: "http://127.0.0.1:8000",
+    description: "Devnet compute for demonstrations",
+    services: ["blocks", "compute"],
+  },
 ];
 
 export const useNeighborhoodStore = create<
