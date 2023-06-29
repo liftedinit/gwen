@@ -9,7 +9,7 @@ import {
   useToast,
 } from "@liftedinit/ui";
 import { NeighborhoodContext } from "api/neighborhoods";
-import {useCloseDeployment, useDisableKey} from "api/services";
+import { useCloseDeployment } from "api/services";
 import { useContext, useRef } from "react";
 
 export function CloseDeploymentDialog({

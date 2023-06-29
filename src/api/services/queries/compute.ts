@@ -1,6 +1,5 @@
 import { Network } from "@liftedinit/many-js";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {queryClient} from "@liftedinit/ui";
 
 export interface DeploymentMeta {
     status: string,
