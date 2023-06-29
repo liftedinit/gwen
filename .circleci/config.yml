@@ -3,7 +3,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.2
+  node: circleci/node@5.1.0
 
 jobs:
   test-build:
@@ -90,6 +90,7 @@ workflows:
               node_version:
                 - "16.16.0"
       - create:
+          name: create-<< matrix.app_env >>
           matrix:
             parameters:
               app_env:
@@ -103,6 +104,7 @@ workflows:
         equal: [scheduled_pipeline, << pipeline.trigger_source >>]
     jobs:
       - create:
+          name: create-<< matrix.app_env >>
           matrix:
             parameters:
               app_env:
