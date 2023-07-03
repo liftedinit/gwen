@@ -16,7 +16,7 @@ export function DeploymentTable({
           <Th>ID</Th>
           <Th>Image</Th>
           <Th>URL</Th>
-          <Th>Price</Th>
+          <Th>Price (AKT/month)</Th>
           <Th>Status</Th>
           <Th>Action</Th>
         </Tr>
