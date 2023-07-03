@@ -49,8 +49,14 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Demo Compute",
-    url: "https://demo.liftedinit.tech/api/compute",
+    url: "https://demo-gwen.liftedinit.tech/api/compute",
     description: "Devnet compute for demonstrations",
+    services: ["blocks", "compute"],
+  },
+  {
+    name: "Local Compute",
+    url: "http://127.0.0.1:8000",
+    description: "Local compute",
     services: ["blocks", "compute"],
   },
 ];
