@@ -105,7 +105,7 @@ export function CreateDeploymentModal({
   };
 
   return (
-    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+    <Modal size="xl" isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
       <Modal.Header>Create Deployment</Modal.Header>
       <Modal.Body>
         <Grid templateColumns="repeat(5,1fr)" gap={9}>
