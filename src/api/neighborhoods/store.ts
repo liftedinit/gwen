@@ -53,12 +53,12 @@ const NEIGHBORHOODS = [
     description: "Devnet compute for demonstrations",
     services: ["compute"],
   },
-  {
-    name: "Local Compute",
-    url: "http://127.0.0.1:8000",
-    description: "Local compute",
-    services: ["compute"],
-  },
+  // {
+  //   name: "Local Compute",
+  //   url: "http://127.0.0.1:8000",
+  //   description: "Local compute",
+  //   services: ["compute"],
+  // },
 ];
 
 export const useNeighborhoodStore = create<
