@@ -9,13 +9,12 @@ import {
 
 export function useListKeys(
   neighborhood: Network | undefined,
-  address: string = ""
+  address: string = "",
+  params: {}[]
 ) {
-  return useQuery(
-    [neighborhood?.url, "kvStore", address, "keys"],
-    async () => await neighborhood?.kvStore.list(),
-    { enabled: !!neighborhood }
-  );
+  return useQueries({
+    queries: params.map((param) => listKeys(neighborhood, address, param)),
+  });
 }
 
 export function combineData(combined: UseQueryResult<{ key: string }>[]) {
@@ -51,6 +50,14 @@ function getValue(neighborhood: Network | undefined, key: string) {
     queryKey: [neighborhood?.url, "kvStore", key, "value"],
     queryFn: async () => await neighborhood?.kvStore.get({ key }),
     enabled: !!neighborhood,
+  };
+}
+
+function listKeys(neighborhood: Network | undefined, address: string = "", params = {}) {
+  return {
+    queryKey: [neighborhood?.url, "kvStore", "list", params],
+    queryFn: async () => await neighborhood?.kvStore.list(params),
+    enabled: !!neighborhood
   };
 }
 
