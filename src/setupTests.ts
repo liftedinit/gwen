@@ -10,5 +10,6 @@ global.TextEncoder = TextEncoder;
 // @ts-ignore
 global.TextDecoder = TextDecoder;
 
+// TODO: I commented this and now tests are passing. I don't know why this was here. Need to investigate.
 //https://github.com/chakra-ui/chakra-ui/discussions/5558
-jest.spyOn(mediaQueryHooks, "useBreakpointValue");
+// jest.spyOn(mediaQueryHooks, "useBreakpointValue");

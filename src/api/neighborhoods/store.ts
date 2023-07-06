@@ -47,12 +47,6 @@ const NEIGHBORHOODS = [
     description: "Devnet key-value store for demonstrations",
     services: ["blocks", "data"],
   },
-  // {
-  //   name: "Local KVStore",
-  //   url: "http://127.0.0.1:8000",
-  //   description: "Local key-value store",
-  //   services: ["blocks", "data"],
-  // }
 ];
 
 export const useNeighborhoodStore = create<
