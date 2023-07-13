@@ -10,11 +10,11 @@ import {
 export function useListKeys(
   neighborhood: Network | undefined,
   address: string = "",
-  params: {}[]
 ) {
-  return useQueries({
-    queries: params.map((param) => listKeys(neighborhood, address, param)),
-  });
+  return [
+    useQuery(listKeys(neighborhood, address,{filter: [[0, address.toString()], [2, false]]} )), // Return all keys that are owned by address and NOT disabled
+    useQuery(listKeys(neighborhood, address, {filter: [[0, "maiyg"], [1, address.toString()], [2, false]]})), // Return all keys that are immutable and previously owned by address and NOT disabled
+  ]
 }
 
 export function combineData(combined: UseQueryResult<{ key: string }>[]) {

@@ -19,12 +19,7 @@ export function Data() {
   const {isOpen, onOpen, onClose} = useDisclosure();
   const [keyvalue, setKeyvalue] = useState({key: "", value: ""});
 
-  const list = useListKeys(neighborhood, account?.address.toString(),
-    [
-      {filter: [[0, account?.address.toString()], [2, false]]},               // Return all keys that are owned by address and NOT disabled
-      {filter: [[0, "maiyg"], [1, account?.address.toString()], [2, false]]}  // Return all keys that are immutable and previously owned by address and NOT disabled
-    ]
-  );
+  const list = useListKeys(neighborhood, account?.address.toString());
   const all_keys = list.flatMap(item => item.data?.keys || []);
   const values = useGetValues(neighborhood, all_keys);
   const queries = useQueryValues(neighborhood, all_keys);
