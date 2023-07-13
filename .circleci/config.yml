@@ -83,7 +83,7 @@ workflows:
           matrix:
             parameters:
               node_version:
-                - "16.16.0"
+                - "18.16.1"
 
   release:
     when:
