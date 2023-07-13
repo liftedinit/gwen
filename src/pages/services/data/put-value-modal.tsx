@@ -1,21 +1,23 @@
 import {
   Alert,
   AlertIcon,
-  Flex,
-  Grid,
-  GridItem,
   Button,
-  Modal,
+  Flex,
   FormControl,
   FormLabel,
+  Grid,
+  GridItem,
   Input,
-  useToast,
+  Modal,
   Textarea,
+  useToast,
 } from "@liftedinit/ui";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { usePutValue } from "../queries";
+import { NeighborhoodContext } from "api/neighborhoods";
+import { usePutValue } from "api/services";
+import { useContext } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-export interface PutValueInputs {
+interface PutValueInputs {
   key: string;
   value: string;
 }
@@ -31,7 +33,13 @@ export function PutValueModal({
   itemKey: string;
   itemValue: string;
 }) {
-  const { mutate: doPutValue, error, isError, isLoading } = usePutValue();
+  const neighborhood = useContext(NeighborhoodContext);
+  const {
+    mutate: doPutValue,
+    error,
+    isError,
+    isLoading,
+  } = usePutValue(neighborhood);
   const {
     control,
     formState: { errors },
@@ -100,7 +108,7 @@ export function PutValueModal({
         {isError && (
           <Alert status="error">
             <AlertIcon />
-            {error.message}
+            {(error as Error).message}
           </Alert>
         )}
       </Modal.Footer>

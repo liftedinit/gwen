@@ -37,10 +37,28 @@ const NEIGHBORHOODS = [
   },
   {
     name: "Demo Ledger",
-    url: "https://demo.liftedinit.tech/api/",
+    url: "https://demo.liftedinit.tech/api",
     description: "Devnet ledger for demonstrations",
     services: ["blocks", "ledger"],
   },
+  {
+    name: "Demo KVStore",
+    url: "https://demo.liftedinit.tech/api/kvstore",
+    description: "Devnet key-value store for demonstrations",
+    services: ["blocks", "data"],
+  },
+  {
+    name: "Demo Compute",
+    url: "https://demo.liftedinit.tech/api/compute",
+    description: "Devnet compute for demonstrations",
+    services: ["compute"],
+  },
+  // {
+  //   name: "Local Compute",
+  //   url: "http://127.0.0.1:8000",
+  //   description: "Local compute",
+  //   services: ["compute"],
+  // },
 ];
 
 export const useNeighborhoodStore = create<

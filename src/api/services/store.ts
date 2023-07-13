@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { FiBookOpen, FiBox, FiDatabase } from "react-icons/fi";
+import { FiBookOpen, FiBox, FiCpu, FiDatabase } from "react-icons/fi";
 import create from "zustand";
 
 interface ServiceInfo {
@@ -37,6 +37,12 @@ const SERVICES = [
     description: "Store information in key-value pairs",
     icon: FiDatabase,
     color: "darkorchid",
+  },
+  {
+    name: "Compute",
+    description: "Compute on the blockchain",
+    icon: FiCpu,
+    color: "lightblue",
   },
 ];
 
