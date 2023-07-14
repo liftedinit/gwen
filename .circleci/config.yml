@@ -88,7 +88,7 @@ workflows:
           matrix:
             parameters:
               node_version:
-                - "16.16.0"
+                - "18.16.1"
       - create:
           name: create-<< matrix.app_env >>
           matrix:
@@ -97,7 +97,6 @@ workflows:
                 - "staging"
                 - "prod"
               release_id: ["${CIRCLE_PR_NUMBER}"]
-
   release:
     when:
       not:
