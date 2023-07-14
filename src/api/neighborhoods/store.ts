@@ -47,6 +47,18 @@ const NEIGHBORHOODS = [
     description: "Devnet key-value store for demonstrations",
     services: ["blocks", "data"],
   },
+  {
+    name: "Demo Compute",
+    url: "https://demo.liftedinit.tech/api/compute",
+    description: "Devnet compute for demonstrations",
+    services: ["compute"],
+  },
+  // {
+  //   name: "Local Compute",
+  //   url: "http://127.0.0.1:8000",
+  //   description: "Local compute",
+  //   services: ["compute"],
+  // },
 ];
 
 export const useNeighborhoodStore = create<

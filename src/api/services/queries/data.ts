@@ -9,12 +9,13 @@ import {
 
 export function useListKeys(
   neighborhood: Network | undefined,
-  address: string = "",
+  address: string = ""
 ) {
-  return [
-    useQuery(listKeys(neighborhood, address,{filter: [[0, address.toString()], [2, false]]} )), // Return all keys that are owned by address and NOT disabled
-    useQuery(listKeys(neighborhood, address, {filter: [[0, "maiyg"], [1, address.toString()], [2, false]]})), // Return all keys that are immutable and previously owned by address and NOT disabled
-  ]
+  return useQuery(
+    [neighborhood?.url, "kvStore", address, "keys"],
+    async () => await neighborhood?.kvStore.list(),
+    { enabled: !!neighborhood }
+  );
 }
 
 export function combineData(combined: UseQueryResult<{ key: string }>[]) {
@@ -50,14 +51,6 @@ function getValue(neighborhood: Network | undefined, key: string) {
     queryKey: [neighborhood?.url, "kvStore", key, "value"],
     queryFn: async () => await neighborhood?.kvStore.get({ key }),
     enabled: !!neighborhood,
-  };
-}
-
-function listKeys(neighborhood: Network | undefined, address: string = "", params = {}) {
-  return {
-    queryKey: [neighborhood?.url, "kvStore", "list", params],
-    queryFn: async () => await neighborhood?.kvStore.list(params),
-    enabled: !!neighborhood
   };
 }
 
