@@ -16,7 +16,7 @@ import { AccountsMenu } from "../accounts-menu";
 jest.mock("@liftedinit/many-js");
 
 describe("AccountsMenu", () => {
-  beforeEach(async function() {
+  beforeEach(async function () {
     toast.closeAll();
     const toasts = screen.queryAllByRole("listitem");
     await Promise.all(
@@ -34,7 +34,7 @@ describe("AccountsMenu", () => {
     });
   });
 
-  it("should render with an active account as anonymous", async function() {
+  it("should render with an active account as anonymous", async function () {
     renderAccountsMenu();
     const activeAccountMenuTriggerBtn = screen.getByRole("button", {
       name: /active account menu trigger/i,
@@ -44,7 +44,7 @@ describe("AccountsMenu", () => {
     ).toBeInTheDocument();
   });
 
-  it("should add an account via a new seed phrase", async function() {
+  it("should add an account via a new seed phrase", async function () {
     const { activeAccountMenuTriggerBtn, formContainer } =
       await setupAddAccount();
     const withinForm = within(formContainer);
@@ -64,7 +64,7 @@ describe("AccountsMenu", () => {
     });
   });
 
-  it("should have a form to add an account via importing with existing seed phrase", async function() {
+  it("should have a form to add an account via importing with existing seed phrase", async function () {
     const { formContainer, tabs } = await setupAddAccount();
     const importTab = within(tabs).getByText(/import/i);
     userEvent.click(importTab);
@@ -95,7 +95,7 @@ describe("AccountsMenu", () => {
     expect(pemInput).not.toBe(null);
   });
 
-  it("should remove an account", async function() {
+  it("should remove an account", async function () {
     await setupEditAccount("to-be-removed", "m123");
     const container = screen.getByTestId("update-account-container");
     const addressToCopy =

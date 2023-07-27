@@ -1,10 +1,12 @@
 import { ANON_IDENTITY } from "@liftedinit/many-js";
 import {
-    Box,
-    Button, Center,
-    Flex,
-    Heading, Spinner,
-    useDisclosure,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Spinner,
+  useDisclosure,
 } from "@liftedinit/ui";
 import { useAccountsStore } from "features/accounts";
 import { Breadcrumbs } from "../breadcrumbs";
@@ -20,14 +22,16 @@ export function Compute() {
 
   // const [keyvalue, setKeyvalue] = useState({ key: "", value: "" });
 
-
   const {
     isOpen: isCreateOpen,
     onOpen: onCreateOpen,
     onClose: onCreateClose,
   } = useDisclosure();
 
-  const { data: deployments, isLoading } = useListDeployments(neighborhood, account?.address.toString());
+  const { data: deployments, isLoading } = useListDeployments(
+    neighborhood,
+    account?.address.toString()
+  );
 
   if (isLoading) {
     return (
@@ -37,17 +41,16 @@ export function Compute() {
     );
   }
 
-  const safeData = Array.isArray(deployments?.deployments) ? deployments.deployments : [];
+  const safeData = Array.isArray(deployments?.deployments)
+    ? deployments.deployments
+    : [];
 
   return (
     <Box p={6}>
       <Heading>Compute</Heading>
       <Breadcrumbs title="Compute" />
 
-      <DeploymentTable
-        onOpen={onCreateOpen}
-        data={safeData}
-      />
+      <DeploymentTable onOpen={onCreateOpen} data={safeData} />
 
       <Flex mt={9} justifyContent="flex-end" w="full">
         <Button

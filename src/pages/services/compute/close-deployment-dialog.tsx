@@ -21,7 +21,11 @@ export function CloseDeploymentDialog({
 }) {
   const neighborhood = useContext(NeighborhoodContext);
   const toast = useToast();
-  const { mutate: doCloseDeployment, error, isError } = useCloseDeployment(neighborhood);
+  const {
+    mutate: doCloseDeployment,
+    error,
+    isError,
+  } = useCloseDeployment(neighborhood);
   const cancelRef = useRef(null);
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -50,8 +54,8 @@ export function CloseDeploymentDialog({
       >
         <AlertDialog.Body>
           <Text>
-            Closing this deployment means it will be permanently deleted.
-            This action cannot be undone.
+            Closing this deployment means it will be permanently deleted. This
+            action cannot be undone.
           </Text>
         </AlertDialog.Body>
         <AlertDialog.Footer>

@@ -29,10 +29,10 @@ export function useTokenInfo(neighborhood: Network | undefined) {
   return useQueries({
     queries: tokenList
       ? [...tokenList.symbols.entries()].map(([address]) => ({
-        queryKey: [neighborhood?.url, "tokens.info", address],
-        queryFn: async () => await neighborhood?.tokens.info({ address }),
-        enabled: !!neighborhood,
-      }))
+          queryKey: [neighborhood?.url, "tokens.info", address],
+          queryFn: async () => await neighborhood?.tokens.info({ address }),
+          enabled: !!neighborhood,
+        }))
       : [],
   });
 }

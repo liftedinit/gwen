@@ -1,1 +1,1 @@
-export { HardwareAuthenticator } from "./hardware-authenticator"
+export { HardwareAuthenticator } from "./hardware-authenticator";
