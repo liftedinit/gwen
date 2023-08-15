@@ -53,6 +53,12 @@ const NEIGHBORHOODS = [
     description: "Devnet compute for demonstrations",
     services: ["compute"],
   },
+  {
+    name: "QA Ledger",
+    url: "https://qa-api.liftedinit.tech",
+    description: "QA ledger for demonstrations",
+    services: ["blocks", "ledger"],
+  },
 ];
 
 export const useNeighborhoodStore = create<
