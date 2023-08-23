@@ -1,6 +1,6 @@
 import { Table, Tbody, Th, Thead, Tr } from "@liftedinit/ui";
 import { DeploymentRow } from "./deployment-row";
-import {DeploymentMeta} from "../../../api/services";
+import { DeploymentMeta } from "../../../api/services";
 
 export function DeploymentTable({
   data,
@@ -22,13 +22,14 @@ export function DeploymentTable({
         </Tr>
       </Thead>
       <Tbody>
-        {data && data.map((deployment) => (
+        {data &&
+          data.map((deployment) => (
             <DeploymentRow
-                key={deployment.dseq}
-                onOpen={onOpen}
-                deployment={deployment}
+              key={deployment.dseq}
+              onOpen={onOpen}
+              deployment={deployment}
             />
-        ))}
+          ))}
       </Tbody>
     </Table>
   );

@@ -1,5 +1,7 @@
 # Gwen
 
+[![coverage](https://img.shields.io/codecov/c/gh/liftedinit/gwen)](https://app.codecov.io/gh/liftedinit/gwen)
+
 Gwen is a CPanel-like dashboard for managing clusters supporting the [Many protocol](https://github.com/many-protocol/specification) built in React.
 
 Read more about this project and its goals on [Medium](https://medium.com/@TheLiftedInitiative/removing-obstacles-to-adoption-5782757e4a0b).
