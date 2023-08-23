@@ -1,10 +1,10 @@
-import React from "react"
+import React from "react";
 import {
   AddAccountMethodProps,
   AddAccountMethodTypes,
-} from "../add-account-modal"
-import { CreateFlow, CreateContextProvider } from "./create"
-import { ImportFlow } from "./import"
+} from "../add-account-modal";
+import { CreateFlow, CreateContextProvider } from "./create";
+import { ImportFlow } from "./import";
 
 export function HardwareAuthenticator({
   addMethod,
@@ -12,17 +12,17 @@ export function HardwareAuthenticator({
   setShowDefaultFooter,
   onSuccess,
 }: AddAccountMethodProps & {
-  addMethod: AddAccountMethodTypes
-  setShowDefaultFooter: (show: boolean) => void
+  addMethod: AddAccountMethodTypes;
+  setShowDefaultFooter: (show: boolean) => void;
 }) {
-  const isCreate = addMethod === AddAccountMethodTypes.createAuthenticator
+  const isCreate = addMethod === AddAccountMethodTypes.createAuthenticator;
 
   React.useEffect(() => {
-    setShowDefaultFooter(false)
+    setShowDefaultFooter(false);
     return () => {
-      setShowDefaultFooter(true)
-    }
-  }, [setShowDefaultFooter])
+      setShowDefaultFooter(true);
+    };
+  }, [setShowDefaultFooter]);
 
   return isCreate ? (
     <CreateContextProvider>
@@ -30,5 +30,5 @@ export function HardwareAuthenticator({
     </CreateContextProvider>
   ) : (
     <ImportFlow setAddMethod={setAddMethod} onSuccess={onSuccess} />
-  )
+  );
 }

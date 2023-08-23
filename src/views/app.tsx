@@ -1,4 +1,12 @@
-import { Blocks, Compute, Data, Layout, Ledger, Neighborhoods, Services } from "pages";
+import {
+  Blocks,
+  Compute,
+  Data,
+  Layout,
+  Ledger,
+  Neighborhoods,
+  Services,
+} from "pages";
 import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import { Splash, Users } from "views";

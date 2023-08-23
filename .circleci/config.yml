@@ -4,6 +4,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.1.0
+  codecov: codecov/codecov@3.2.4
 
 jobs:
   test-build:
@@ -18,7 +19,8 @@ jobs:
       - install-packages
       - run:
           name: Run tests
-          command: npm run test
+          command: npm run test -- --coverage
+      - codecov/upload
       - run: echo 'export NODE_OPTIONS="--max-old-space-size=4096"' >> $BASH_ENV
       - run:
           name: Build staging app
