@@ -1,20 +1,20 @@
 import { Network } from "@liftedinit/many-js";
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export interface DeploymentMeta {
-    status: string,
-    dseq: number,
-    meta?: {
-        provider: string,
-        provider_info: {
-            host?: string,
-            port: number,
-            external_port: number,
-            protocol: string,
-        },
-        price: number,
-    }
-    image: string,
+  status: string;
+  dseq: number;
+  meta?: {
+    provider: string;
+    provider_info: {
+      host?: string;
+      port: number;
+      external_port: number;
+      protocol: string;
+    };
+    price: number;
+  };
+  image: string;
 }
 
 export function useCreateDeployment(neighborhood: Network | undefined) {
@@ -29,7 +29,7 @@ export function useCreateDeployment(neighborhood: Network | undefined) {
       memory_type,
       num_storage,
       storage_type,
-      region
+      region,
     }: {
       image: string;
       port: string;
@@ -40,7 +40,6 @@ export function useCreateDeployment(neighborhood: Network | undefined) {
       storage_type: string;
       region: string;
     }) =>
-
       await neighborhood?.compute.deploy({
         image,
         port: +port,
@@ -49,26 +48,26 @@ export function useCreateDeployment(neighborhood: Network | undefined) {
         memory_type: +memory_type,
         num_storage: +num_storage,
         storage_type: +storage_type,
-        region: +region
+        region: +region,
       }),
     {
       onSuccess: () =>
-          queryClient.invalidateQueries({
-            queryKey: [neighborhood?.url, "compute", "deploy"],
+        queryClient.invalidateQueries({
+          queryKey: [neighborhood?.url, "compute", "deploy"],
         }),
     }
   );
 }
 
 export function useListDeployments(
-    neighborhood: Network | undefined,
-    address: string = ""
+  neighborhood: Network | undefined,
+  address: string = ""
 ) {
-    return useQuery(
-        [neighborhood?.url, "compute", "deploy", "list"],
-        async () => await neighborhood?.compute.list({ owner: address }),
-        { enabled: !!neighborhood }
-    );
+  return useQuery(
+    [neighborhood?.url, "compute", "deploy", "list"],
+    async () => await neighborhood?.compute.list({ owner: address }),
+    { enabled: !!neighborhood }
+  );
 }
 
 export function useCloseDeployment(neighborhood: Network | undefined) {
