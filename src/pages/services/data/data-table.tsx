@@ -1,4 +1,4 @@
-import { Table, Tbody, Th, Thead, Tr } from "@liftedinit/ui";
+import { Box, Table, Tbody, Th, Thead, Tr } from "@liftedinit/ui";
 import { DataRow } from "./data-row";
 
 export function DataTable({
@@ -13,7 +13,8 @@ export function DataTable({
   setKeyvalue: ({ key, value }: { key: string; value: string }) => void;
 }) {
   return (
-    <Table>
+    <Box bg="white" mt="2" h="85vh" overflowY="auto" boxShadow="base">
+    <Table overflowY="hidden" variant="simple">
       <Thead>
         <Tr>
           <Th>Key</Th>
@@ -36,5 +37,6 @@ export function DataTable({
           ))}
       </Tbody>
     </Table>
+    </Box>
   );
 }
