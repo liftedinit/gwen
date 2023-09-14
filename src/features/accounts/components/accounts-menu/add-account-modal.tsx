@@ -1,21 +1,22 @@
-import React from "react";
 import {
   Box,
   Button,
+  ChevronRightIcon,
   Flex,
+  Modal,
   ScaleFade,
   Tab,
-  Tabs,
   TabList,
+  Tabs,
   VStack,
-  ChevronRightIcon,
-  Modal,
 } from "@liftedinit/ui";
-import { SeedWords } from "./seed-words";
-import { CreateAccount } from "./create-account";
-import { PemFile } from "./pem-file";
-import { HardwareAuthenticator } from "./hardware-authenticator";
+import { getServices, NeighborhoodContext } from "api/neighborhoods";
+import { Dispatch, ReactNode, useContext, useEffect, useState } from "react";
 import { SocialLogin } from "../social-login";
+import { CreateAccount } from "./create-account";
+import { HardwareAuthenticator } from "./hardware-authenticator";
+import { PemFile } from "./pem-file";
+import { SeedWords } from "./seed-words";
 
 export enum AddAccountMethodTypes {
   createSeed,
@@ -29,7 +30,7 @@ export enum AddAccountMethodTypes {
 export const toastTitle = "Add Account";
 export type AddMethodState = AddAccountMethodTypes | "";
 export type AddAccountMethodProps = {
-  setAddMethod: React.Dispatch<AddMethodState>;
+  setAddMethod: Dispatch<AddMethodState>;
   onSuccess: () => void;
 };
 
@@ -40,9 +41,16 @@ export function AddAccountModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [addMethod, setAddMethod] = React.useState<AddMethodState>("");
-  const [showDefaultFooter, setShowDefaultFooter] =
-    React.useState<boolean>(true);
+  const [addMethod, setAddMethod] = useState<AddMethodState>("");
+  const [showDefaultFooter, setShowDefaultFooter] = useState<boolean>(true);
+
+  const neighborhood = useContext(NeighborhoodContext);
+  const [services, setServices] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    (async () => {
+      setServices(await getServices(neighborhood));
+    })();
+  }, [neighborhood]);
 
   function onSuccess() {
     onClose();
@@ -50,7 +58,7 @@ export function AddAccountModal({
 
   const hasAddMethod = typeof addMethod === "number";
 
-  React.useEffect(() => {
+  useEffect(() => {
     setAddMethod("");
   }, [isOpen]);
 
@@ -70,6 +78,7 @@ export function AddAccountModal({
               setAddMethod(methodType);
             }}
             onSuccess={onSuccess}
+            services={services}
           />
         </ScaleFade>
       )}
@@ -86,13 +95,13 @@ export function AddAccountModal({
           )}
           {(addMethod === AddAccountMethodTypes.importAuthenticator ||
             addMethod === AddAccountMethodTypes.createAuthenticator) && (
-            <HardwareAuthenticator
-              addMethod={addMethod}
-              setAddMethod={setAddMethod}
-              onSuccess={onSuccess}
-              setShowDefaultFooter={setShowDefaultFooter}
-            />
-          )}
+              <HardwareAuthenticator
+                addMethod={addMethod}
+                setAddMethod={setAddMethod}
+                onSuccess={onSuccess}
+                setShowDefaultFooter={setShowDefaultFooter}
+              />
+            )}
           {showDefaultFooter && (
             <Modal.Footer>
               <Flex justifyContent="flex-end">
@@ -116,11 +125,13 @@ enum TabNames {
 function AddAccountMethods({
   onAddMethodClick,
   onSuccess,
+  services,
 }: {
   onAddMethodClick: (method: AddAccountMethodTypes) => void;
   onSuccess: () => void;
+  services: Set<string>;
 }) {
-  const [activeTab, setActiveTab] = React.useState(TabNames.create);
+  const [activeTab, setActiveTab] = useState(TabNames.create);
   const tabs = ["Create New", "Import"];
   return (
     <>
@@ -143,10 +154,16 @@ function AddAccountMethods({
 
         <SocialLogin onSuccess={onSuccess} />
         {activeTab === TabNames.create && (
-          <CreateAccountOptions onAddMethodClick={onAddMethodClick} />
+          <CreateAccountOptions
+            onAddMethodClick={onAddMethodClick}
+            services={services}
+          />
         )}
         {activeTab === TabNames.import && (
-          <ImportAcountOptions onAddMethodClick={onAddMethodClick} />
+          <ImportAcountOptions
+            onAddMethodClick={onAddMethodClick}
+            services={services}
+          />
         )}
       </Modal.Body>
       <Modal.Footer />
@@ -164,26 +181,31 @@ const createCards = [
     label: "Hardware Authenticator",
     title: "create new with hardware authenticator",
     onClickArg: AddAccountMethodTypes.createAuthenticator,
+    requires: "idstore",
   },
 ];
 
 function CreateAccountOptions({
   onAddMethodClick,
+  services,
 }: {
   onAddMethodClick: (method: AddAccountMethodTypes) => void;
+  services: Set<string>;
 }) {
   return (
     <VStack alignItems="flex-start" w="full">
-      {createCards.map((c, idx) => {
-        return (
-          <AddAccountCard
-            key={idx}
-            label={c.label}
-            title={c.title}
-            onClick={() => onAddMethodClick(c.onClickArg)}
-          />
-        );
-      })}
+      {createCards
+        .filter((c) => !c.requires || services.has(c.requires))
+        .map((c, idx) => {
+          return (
+            <AddAccountCard
+              key={idx}
+              label={c.label}
+              title={c.title}
+              onClick={() => onAddMethodClick(c.onClickArg)}
+            />
+          );
+        })}
     </VStack>
   );
 }
@@ -203,25 +225,30 @@ const importCards = [
     label: "Hardware Authenticator",
     title: "import with hardware authenticator",
     onClickArg: AddAccountMethodTypes.importAuthenticator,
+    requires: "idstore",
   },
 ];
 function ImportAcountOptions({
   onAddMethodClick,
+  services,
 }: {
   onAddMethodClick: (method: AddAccountMethodTypes) => void;
+  services: Set<string>;
 }) {
   return (
     <VStack alignItems="flex-start" w="full">
-      {importCards.map((c, idx) => {
-        return (
-          <AddAccountCard
-            key={idx}
-            label={c.label}
-            title={c.title}
-            onClick={() => onAddMethodClick(c.onClickArg)}
-          />
-        );
-      })}
+      {importCards
+        .filter((c) => !c.requires || services.has(c.requires))
+        .map((c, idx) => {
+          return (
+            <AddAccountCard
+              key={idx}
+              label={c.label}
+              title={c.title}
+              onClick={() => onAddMethodClick(c.onClickArg)}
+            />
+          );
+        })}
     </VStack>
   );
 }
@@ -231,7 +258,7 @@ function AddAccountCard({
   title,
   onClick,
 }: {
-  label: string | React.ReactNode;
+  label: string | ReactNode;
   title?: string;
   onClick: () => void;
 }) {

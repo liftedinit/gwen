@@ -48,3 +48,21 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
     </NeighborhoodContext.Provider>
   );
 }
+
+export async function getServices(
+  neighborhood: Network | undefined
+): Promise<Set<string>> {
+  const { endpoints } = await neighborhood?.base.endpoints();
+  const services = endpoints
+    .map((endpoint: string) => endpoint.split(".")[0])
+    .reduce((acc: Set<string>, val: string) => acc.add(val), new Set<string>());
+  return services;
+}
+
+export async function hasService(
+  neighborhood: Network | undefined,
+  service: string
+): Promise<boolean> {
+  const services = await getServices(neighborhood);
+  return services.has(service);
+}
