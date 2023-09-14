@@ -52,7 +52,10 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
 export async function getServices(
   neighborhood: Network | undefined
 ): Promise<Set<string>> {
-  const { endpoints } = await neighborhood?.base.endpoints();
+  if (!neighborhood || !neighborhood.base) {
+    return new Set<string>();
+  }
+  const { endpoints } = await neighborhood.base.endpoints();
   const services = endpoints
     .map((endpoint: string) => endpoint.split(".")[0])
     .reduce((acc: Set<string>, val: string) => acc.add(val), new Set<string>());
