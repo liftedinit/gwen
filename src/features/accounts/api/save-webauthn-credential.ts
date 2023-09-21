@@ -1,10 +1,9 @@
 import { IdStore, Network, WebAuthnIdentity } from "@liftedinit/many-js";
-import { NeighborhoodContext } from "api/neighborhoods";
-import { useContext } from "react";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useMutation } from "react-query";
 
 export function useSaveWebauthnCredential() {
-  const network = useContext(NeighborhoodContext);
+  const { command } = useNeighborhoodContext();
   return useMutation<
     { phrase: string },
     Error,
@@ -15,7 +14,7 @@ export function useSaveWebauthnCredential() {
       identity: WebAuthnIdentity;
     }
   >(async ({ address, credentialId, cosePublicKey, identity }) => {
-    const n = new Network(network?.url ?? "", identity);
+    const n = new Network(command?.url ?? "", identity);
     n.apply([IdStore]);
     const res = await n?.idStore.store(address, credentialId, cosePublicKey);
     return res;

@@ -8,9 +8,9 @@ import {
   useDisclosure,
   useToast,
 } from "@liftedinit/ui";
-import { NeighborhoodContext } from "api/neighborhoods";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useMarkImmutable } from "api/services";
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 
 export function MarkImmutableDialog({
   itemKey,
@@ -19,7 +19,7 @@ export function MarkImmutableDialog({
   itemKey: string;
   children: (onOpen: () => void) => void;
 }) {
-  const neighborhood = useContext(NeighborhoodContext);
+  const { command: neighborhood } = useNeighborhoodContext();
   const toast = useToast();
   const {
     mutate: doTransferKey,

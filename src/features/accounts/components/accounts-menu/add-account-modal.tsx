@@ -10,8 +10,8 @@ import {
   Tabs,
   VStack,
 } from "@liftedinit/ui";
-import { getServices, NeighborhoodContext } from "api/neighborhoods";
-import { Dispatch, ReactNode, useContext, useEffect, useState } from "react";
+import { useNeighborhoodContext } from "api/neighborhoods";
+import { Dispatch, ReactNode, useEffect, useState } from "react";
 import { SocialLogin } from "../social-login";
 import { CreateAccount } from "./create-account";
 import { HardwareAuthenticator } from "./hardware-authenticator";
@@ -44,14 +44,6 @@ export function AddAccountModal({
   const [addMethod, setAddMethod] = useState<AddMethodState>("");
   const [showDefaultFooter, setShowDefaultFooter] = useState<boolean>(true);
 
-  const neighborhood = useContext(NeighborhoodContext);
-  const [services, setServices] = useState<Set<string>>(new Set());
-  useEffect(() => {
-    (async () => {
-      setServices(await getServices(neighborhood));
-    })();
-  }, [neighborhood]);
-
   function onSuccess() {
     onClose();
   }
@@ -78,7 +70,6 @@ export function AddAccountModal({
               setAddMethod(methodType);
             }}
             onSuccess={onSuccess}
-            services={services}
           />
         </ScaleFade>
       )}
@@ -125,11 +116,9 @@ enum TabNames {
 function AddAccountMethods({
   onAddMethodClick,
   onSuccess,
-  services,
 }: {
   onAddMethodClick: (method: AddAccountMethodTypes) => void;
   onSuccess: () => void;
-  services: Set<string>;
 }) {
   const [activeTab, setActiveTab] = useState(TabNames.create);
   const tabs = ["Create New", "Import"];
@@ -154,16 +143,10 @@ function AddAccountMethods({
 
         <SocialLogin onSuccess={onSuccess} />
         {activeTab === TabNames.create && (
-          <CreateAccountOptions
-            onAddMethodClick={onAddMethodClick}
-            services={services}
-          />
+          <CreateAccountOptions onAddMethodClick={onAddMethodClick} />
         )}
         {activeTab === TabNames.import && (
-          <ImportAcountOptions
-            onAddMethodClick={onAddMethodClick}
-            services={services}
-          />
+          <ImportAcountOptions onAddMethodClick={onAddMethodClick} />
         )}
       </Modal.Body>
       <Modal.Footer />
@@ -187,11 +170,10 @@ const createCards = [
 
 function CreateAccountOptions({
   onAddMethodClick,
-  services,
 }: {
   onAddMethodClick: (method: AddAccountMethodTypes) => void;
-  services: Set<string>;
 }) {
+  const { services } = useNeighborhoodContext();
   return (
     <VStack alignItems="flex-start" w="full">
       {createCards
@@ -230,11 +212,11 @@ const importCards = [
 ];
 function ImportAcountOptions({
   onAddMethodClick,
-  services,
 }: {
   onAddMethodClick: (method: AddAccountMethodTypes) => void;
-  services: Set<string>;
 }) {
+  const { services } = useNeighborhoodContext();
+
   return (
     <VStack alignItems="flex-start" w="full">
       {importCards

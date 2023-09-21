@@ -12,10 +12,10 @@ import {
   Spinner,
   useDisclosure,
 } from "@liftedinit/ui";
-import { NeighborhoodContext } from "api/neighborhoods";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { TokenInfo, useTokenInfo } from "api/services";
 import { useAccountsStore } from "features/accounts";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Breadcrumbs } from "../breadcrumbs";
 import { BurnTokenModal } from "./burn-token-modal";
 import { CreateTokenModal } from "./create-token-modal";
@@ -25,7 +25,7 @@ import { TokenTable } from "./token-table";
 export function Ledger() {
   const [selectedToken, setSelectedToken] = useState<TokenInfo>();
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
-  const neighborhood = useContext(NeighborhoodContext);
+  const { query: neighborhood } = useNeighborhoodContext();
 
   const {
     isOpen: isMintOpen,

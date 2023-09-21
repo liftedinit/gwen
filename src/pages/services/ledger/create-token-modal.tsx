@@ -12,10 +12,10 @@ import {
   Modal,
   useToast,
 } from "@liftedinit/ui";
-import { NeighborhoodContext } from "api/neighborhoods";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useCreateToken } from "api/services";
 import { useAccountsStore } from "features/accounts";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 export interface CreateTokenInputs {
@@ -33,7 +33,7 @@ export function CreateTokenModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const neighborhood = useContext(NeighborhoodContext);
+  const { command: neighborhood } = useNeighborhoodContext();
   const {
     mutate: doCreateToken,
     error,

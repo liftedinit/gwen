@@ -3,8 +3,7 @@ import {
   AccountMultisigArgument,
   CreateAccountResponse,
 } from "@liftedinit/many-js";
-import { NeighborhoodContext } from "api/neighborhoods";
-import { useContext } from "react";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useMutation } from "react-query";
 import { accountLedgerFeature, accountMultisigFeature } from "../types";
 
@@ -20,7 +19,7 @@ export type CreateAccountFormData = {
 };
 
 export function useCreateAccount() {
-  const n = useContext(NeighborhoodContext);
+  const { command: n } = useNeighborhoodContext();
   return useMutation<CreateAccountResponse, Error, CreateAccountFormData>(
     async (vars: CreateAccountFormData) => {
       const name = vars.accountSettings.name;

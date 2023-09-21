@@ -12,9 +12,8 @@ import {
   Modal,
   useToast,
 } from "@liftedinit/ui";
-import { NeighborhoodContext } from "api/neighborhoods";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { TokenInfo, useMintToken } from "api/services";
-import { useContext } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 export interface MintTokenInputs {
@@ -31,7 +30,7 @@ export function MintTokenModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const neighborhood = useContext(NeighborhoodContext);
+  const { command: neighborhood } = useNeighborhoodContext();
   const {
     mutate: doMintToken,
     error,

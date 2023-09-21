@@ -28,9 +28,9 @@ import {
   useToast,
   VStack,
 } from "@liftedinit/ui";
-import { hasService, NeighborhoodContext } from "api/neighborhoods";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useAccountsStore } from "features/accounts";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Account, AccountId } from "../../types";
 import { AddAccountModal } from "./add-account-modal";
 import { EditAccountModal } from "./edit-account-modal";
@@ -69,13 +69,12 @@ export function AccountsMenu() {
   );
 
   const toast = useToast();
-  const neighborhood = useContext(NeighborhoodContext);
+  const { services } = useNeighborhoodContext();
   useEffect(() => {
     (async () => {
       const isWebAuthnIdentity =
         activeAccount?.identity instanceof WebAuthnIdentity;
-      const hasIdStore = await hasService(neighborhood, "idstore");
-      if (isWebAuthnIdentity && !hasIdStore) {
+      if (isWebAuthnIdentity && !services.has("idstore")) {
         setActiveId(0); // reset to Anonymous
         toast({
           status: "warning",
@@ -85,7 +84,7 @@ export function AccountsMenu() {
         });
       }
     })();
-  }, [activeAccount, neighborhood, setActiveId, toast]);
+  }, [activeAccount, services, setActiveId, toast]);
 
   const [editAccount, setEditAccount] = useState<
     [number, Account] | undefined

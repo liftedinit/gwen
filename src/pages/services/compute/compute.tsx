@@ -9,16 +9,15 @@ import {
   useDisclosure,
 } from "@liftedinit/ui";
 import { useAccountsStore } from "features/accounts";
-import { Breadcrumbs } from "../breadcrumbs";
-import { DeploymentTable } from "./deployment-table";
-import { CreateDeploymentModal } from "./create-deployment-modal";
-import { useContext } from "react";
-import { NeighborhoodContext } from "../../../api/neighborhoods";
+import { useNeighborhoodContext } from "../../../api/neighborhoods";
 import { useListDeployments } from "../../../api/services";
+import { Breadcrumbs } from "../breadcrumbs";
+import { CreateDeploymentModal } from "./create-deployment-modal";
+import { DeploymentTable } from "./deployment-table";
 
 export function Compute() {
   const account = useAccountsStore((s) => s.byId.get(s.activeId));
-  const neighborhood = useContext(NeighborhoodContext);
+  const { query: neighborhood } = useNeighborhoodContext();
 
   // const [keyvalue, setKeyvalue] = useState({ key: "", value: "" });
 

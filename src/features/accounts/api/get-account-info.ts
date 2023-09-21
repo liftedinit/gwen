@@ -3,13 +3,12 @@ import {
   AccountRole,
   GetAccountInfoResponse,
 } from "@liftedinit/many-js";
-import { NeighborhoodContext } from "api/neighborhoods";
-import { useContext } from "react";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useQuery } from "react-query";
 import { useAccountsStore } from "../stores";
 
 export function useGetAccountInfo(accountAddress?: string) {
-  const n = useContext(NeighborhoodContext);
+  const { query: n } = useNeighborhoodContext();
   const activeIdentity = useAccountsStore((s) => s.byId.get(s.activeId));
   const address = activeIdentity?.address;
 

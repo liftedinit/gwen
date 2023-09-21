@@ -13,9 +13,8 @@ import {
   Select,
   useToast,
 } from "@liftedinit/ui";
-import { NeighborhoodContext } from "api/neighborhoods";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useCreateDeployment } from "api/services";
-import { useContext } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 const Regions = ["us-east", "us-west"];
@@ -53,7 +52,7 @@ export function CreateDeploymentModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const neighborhood = useContext(NeighborhoodContext);
+  const { command: neighborhood } = useNeighborhoodContext();
   const {
     mutate: doCreateDeployment,
     error,

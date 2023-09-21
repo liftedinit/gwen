@@ -12,60 +12,73 @@ import {
   Tokens,
 } from "@liftedinit/many-js";
 import { useAccountsStore } from "features/accounts";
-import { createContext, ReactNode, useMemo } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import { useNeighborhoodStore } from "./store";
 
-export const NeighborhoodContext = createContext<Network | undefined>(
-  undefined
-);
+interface INeighborhoodContext {
+  query?: Network;
+  command?: Network;
+  services: Set<string>;
+}
+
+export const NeighborhoodContext = createContext<INeighborhoodContext>({
+  services: new Set(),
+});
 
 export function NeighborhoodProvider({ children }: { children: ReactNode }) {
-  const activeNeighborhood = useNeighborhoodStore(
-    (s) => s.neighborhoods[s.activeId]
-  );
-  const activeAccount = useAccountsStore((s) => s.byId.get(s.activeId))!;
+  const neighborhood = useNeighborhoodStore((s) => s.neighborhoods[s.activeId]);
+  const account = useAccountsStore((s) => s.byId.get(s.activeId))!;
 
-  const neighborhood = useMemo(() => {
-    const identity = activeAccount?.identity ?? new AnonymousIdentity();
-    const network = new Network(activeNeighborhood.url, identity);
-    network.apply([
-      Account,
-      Base,
-      Blockchain,
-      Compute,
-      Events,
-      IdStore,
-      KvStore,
-      Ledger,
-      Tokens,
-    ]);
-    return network;
-  }, [activeAccount, activeNeighborhood]);
+  const url = neighborhood.url;
+  const anonymous = new AnonymousIdentity();
+  const identity = account?.identity ?? anonymous;
+
+  const context = useMemo(() => {
+    const query = new Network(url, anonymous);
+    const command = new Network(url, identity);
+    [query, command].forEach((network) =>
+      network.apply([
+        Account,
+        Base,
+        Blockchain,
+        Compute,
+        Events,
+        IdStore,
+        KvStore,
+        Ledger,
+        Tokens,
+      ])
+    );
+    return { query, command, services: new Set<string>() };
+  }, [identity, url]);
+
+  useEffect(() => {
+    async function updateServices() {
+      if (!context.query || !context.query.base) {
+        return;
+      }
+      const { endpoints } = await context.query.base.endpoints();
+      context.services = endpoints
+        .map((endpoint: string) => endpoint.split(".")[0])
+        .reduce(
+          (acc: Set<string>, val: string) => acc.add(val),
+          new Set<string>()
+        );
+    }
+    updateServices();
+  }, [url]);
 
   return (
-    <NeighborhoodContext.Provider value={neighborhood}>
+    <NeighborhoodContext.Provider value={context}>
       {children}
     </NeighborhoodContext.Provider>
   );
 }
 
-export async function getServices(
-  neighborhood: Network | undefined
-): Promise<Set<string>> {
-  if (!neighborhood || !neighborhood.base) {
-    return new Set<string>();
-  }
-  const { endpoints } = await neighborhood.base.endpoints();
-  const services = endpoints
-    .map((endpoint: string) => endpoint.split(".")[0])
-    .reduce((acc: Set<string>, val: string) => acc.add(val), new Set<string>());
-  return services;
-}
-
-export async function hasService(
-  neighborhood: Network | undefined,
-  service: string
-): Promise<boolean> {
-  const services = await getServices(neighborhood);
-  return services.has(service);
-}
+export const useNeighborhoodContext = () => useContext(NeighborhoodContext);

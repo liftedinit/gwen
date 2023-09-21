@@ -6,14 +6,13 @@ import {
   Box,
   Heading,
 } from "@liftedinit/ui";
-import { NeighborhoodContext } from "api/neighborhoods";
+import { useNeighborhoodContext } from "api/neighborhoods";
 import { useBlockchainInfoQuery } from "api/services";
-import { useContext } from "react";
 import { replacer } from "shared";
 import { Breadcrumbs } from "../breadcrumbs";
 
 export function Blocks() {
-  const neighborhood = useContext(NeighborhoodContext);
+  const { query: neighborhood } = useNeighborhoodContext();
   const { data } = useBlockchainInfoQuery(neighborhood);
 
   return (
