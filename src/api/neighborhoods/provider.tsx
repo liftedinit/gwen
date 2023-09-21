@@ -36,10 +36,11 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
   const account = useAccountsStore((s) => s.byId.get(s.activeId))!;
 
   const url = neighborhood.url;
-  const anonymous = new AnonymousIdentity();
-  const identity = account?.identity ?? anonymous;
 
   const context = useMemo(() => {
+    const anonymous = new AnonymousIdentity();
+    const identity = account?.identity ?? anonymous;
+
     const query = new Network(url, anonymous);
     const command = new Network(url, identity);
     [query, command].forEach((network) =>
@@ -56,7 +57,7 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
       ])
     );
     return { query, command, services: new Set<string>() };
-  }, [identity, url]);
+  }, [account, url]);
 
   useEffect(() => {
     async function updateServices() {
@@ -72,7 +73,7 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
         );
     }
     updateServices();
-  }, [url]);
+  }, [context]);
 
   return (
     <NeighborhoodContext.Provider value={context}>
