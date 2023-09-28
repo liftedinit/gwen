@@ -18,6 +18,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { useNeighborhoodStore } from "./store";
 
@@ -32,10 +33,9 @@ export const NeighborhoodContext = createContext<INeighborhoodContext>({
 });
 
 export function NeighborhoodProvider({ children }: { children: ReactNode }) {
-  const neighborhood = useNeighborhoodStore((s) => s.neighborhoods[s.activeId]);
+  const { url } = useNeighborhoodStore((s) => s.neighborhoods[s.activeId]);
   const account = useAccountsStore((s) => s.byId.get(s.activeId))!;
-
-  const url = neighborhood.url;
+  const [services, setServices] = useState<Set<string>>(new Set());
 
   const context = useMemo(() => {
     const anonymous = new AnonymousIdentity();
@@ -56,8 +56,8 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
         Tokens,
       ])
     );
-    return { query, command, services: new Set<string>() };
-  }, [account, url]);
+    return { query, command, services };
+  }, [account, url, services]);
 
   useEffect(() => {
     async function updateServices() {
@@ -65,15 +65,14 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
         return;
       }
       const { endpoints } = await context.query.base.endpoints();
-      context.services = endpoints
+      const updated = endpoints
         .map((endpoint: string) => endpoint.split(".")[0])
-        .reduce(
-          (acc: Set<string>, val: string) => acc.add(val),
-          new Set<string>()
-        );
+        .reduce((acc: Set<string>, val: string) => acc.add(val), new Set());
+      setServices(updated);
     }
     updateServices();
-  }, [context]);
+    // eslint-disable-next-line
+  }, [url]);
 
   return (
     <NeighborhoodContext.Provider value={context}>
