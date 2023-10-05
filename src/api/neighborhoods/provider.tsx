@@ -64,10 +64,15 @@ export function NeighborhoodProvider({ children }: { children: ReactNode }) {
       if (!context.query || !context.query.base) {
         return;
       }
-      const { endpoints } = await context.query.base.endpoints();
-      const updated = endpoints
-        .map((endpoint: string) => endpoint.split(".")[0])
-        .reduce((acc: Set<string>, val: string) => acc.add(val), new Set());
+      const updated = new Set<string>();
+      try {
+        const { endpoints } = await context.query.base.endpoints();
+        endpoints
+          .map((endpoint: string) => endpoint.split(".")[0])
+          .forEach((service: string) => updated.add(service));
+      } catch (error) {
+        console.error(`Couldn't update services: ${(error as Error).message}`);
+      }
       setServices(updated);
     }
     updateServices();
