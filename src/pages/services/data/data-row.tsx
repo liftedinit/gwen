@@ -10,6 +10,7 @@ import {
 } from "@liftedinit/ui";
 import { DeleteKeyDialog } from "./delete-key-dialog";
 import { MarkImmutableDialog } from "./mark-immutable-dialog";
+import { ExpandCode } from "shared";
 
 export function DataRow({
   item,
@@ -29,7 +30,7 @@ export function DataRow({
   return (
     <Tr key={item.key}>
       <Td>{item.key}</Td>
-      <Td>{Buffer.from(item.value).toString()}</Td>
+      <Td><ExpandCode content={Buffer.from(item.value).toString()} /></Td>
       <Td>
         {isEditable ? (
           <Tag colorScheme="green">Modifiable</Tag>
